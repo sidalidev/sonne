@@ -21,7 +21,7 @@ The app shows the start and the end of it (`3100c7dc…02e3`) under Settings, Ab
 - The Android app (`android/`): permissions, storage of the key, the Bluetooth beacon and GATT server, the built-in updater.
 - The relay (`relay/`): anything that lets someone ring, stop or follow a phone without its key, read a status, or exhaust the relay.
 - The web page (`web/`): key handling in the browser, content security policy.
-- The protocol and its cryptography (`docs/PROTOCOLE.md`, `docs/VECTEURS.json`).
+- The protocol and its cryptography (`docs/PROTOCOL.md`, `docs/VECTEURS.json`).
 
 ## Out of scope
 

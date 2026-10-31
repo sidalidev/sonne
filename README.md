@@ -36,7 +36,7 @@ Give it a try: "Test the ringer" in the app, then "Ring" in the page.
 3. The screen asks the phone, through the relay, to turn on its beacon (then every 8 min while it stays open) and says whether the request went through. Move around: the gauge goes from "Lost" to "Very hot", a beep speeds up as you get closer (can be turned off), the phone vibrates, and the screen shows how long ago the beacon was seen and the strength of the last signal.
 4. **Ring**: if the phone was seen less than 10 s ago, the command goes straight over Bluetooth (no Internet, no relay) and the status comes back the same way (ringing or not, battery). Otherwise, or if Bluetooth fails, the same encrypted message goes through the relay: the phone never runs it twice.
 
-Privacy: outside search mode, the phone broadcasts nothing. During search mode, the beacon only holds an 8-byte identifier derived from the secret and the time, which changes every 15 min. Without the secret, this identifier does not link two windows together; other signals can (see Limits). The searcher only keeps the derived keys of the other phones, scans without location permission (`neverForLocation`) and only while the Nearby screen is open. Details: "Proximité Bluetooth" section of [`docs/PROTOCOLE.md`](docs/PROTOCOLE.md).
+Privacy: outside search mode, the phone broadcasts nothing. During search mode, the beacon only holds an 8-byte identifier derived from the secret and the time, which changes every 15 min. Without the secret, this identifier does not link two windows together; other signals can (see Limits). The searcher only keeps the derived keys of the other phones, scans without location permission (`neverForLocation`) and only while the Nearby screen is open. Details: "Bluetooth proximity" section of [`docs/PROTOCOL.md`](docs/PROTOCOL.md).
 
 ## Limits
 
@@ -56,7 +56,7 @@ Privacy: outside search mode, the phone broadcasts nothing. During search mode, 
 - `relay/`: the WebSocket relay (Node 22, a single dependency: `ws`)
 - `web/`: the control page served by the relay (no framework, installable as a PWA)
 - `deploy/docker-compose.yml`: deployment of the relay behind Traefik
-- `docs/PROTOCOLE.md`: protocol and architecture
+- `docs/PROTOCOL.md`: protocol and architecture
 - `docs/VECTEURS.json`: test vectors shared by the relay, the web page and the app
 - `PRIVACY.md`: what leaves the device, where to, encrypted or not (the same text is in the app)
 - `SECURITY.md`: report a vulnerability, fingerprint of the signing certificate; `docs/THREAT_MODEL.md`; dated internal reviews in `docs/security/`
@@ -92,7 +92,7 @@ The fake phone prints its pairing link (`http://localhost:7700/#s=…`): open it
 
 ## Relay
 
-The relay (`relay/server.js`, Node 22, single dependency `ws`) passes opaque messages between the phone and the browsers. It only knows the id (derived from the secret) and, for the phone, the proof P the id is derived from. It can neither read nor check commands, nor read statuses, and writes nothing to disk. Full protocol, in French for now: [`docs/PROTOCOLE.md`](docs/PROTOCOLE.md) (v2, encrypted commands v3).
+The relay (`relay/server.js`, Node 22, single dependency `ws`) passes opaque messages between the phone and the browsers. It only knows the id (derived from the secret) and, for the phone, the proof P the id is derived from. It can neither read nor check commands, nor read statuses, and writes nothing to disk. Full protocol: [`docs/PROTOCOL.md`](docs/PROTOCOL.md) (v2, encrypted commands v3).
 
 The id never goes into a URL (proxy access logs would record it): it travels in a header.
 
@@ -121,7 +121,7 @@ The relay answers the browser that sends a command with `{"type":"relayed","nonc
 | `SONNE_PHONE_DEAD_S` | `600` | silence after which the phone connection is cut, in seconds |
 | `SONNE_TRUST_PROXY` | `0` | `1` behind a proxy (Traefik, nginx): the per-IP limit reads the last entry of `X-Forwarded-For` |
 | `SONNE_WEB_DIR` | `../web` | web page folder |
-| `SONNE_CMD_V2` | `1` | `1` during the transition to encrypted commands: the old signed format (app 1.5 and older) is still relayed. `0` after the cut-off (default of relay 1.7): it is refused with 400 (`docs/PROTOCOLE.md`, "Transition, puis coupure de l'ancien format") |
+| `SONNE_CMD_V2` | `1` | `1` during the transition to encrypted commands: the old signed format (app 1.5 and older) is still relayed. `0` after the cut-off (default of relay 1.7): it is refused with 400 (`docs/PROTOCOL.md`, "Transition, then cut-off of the old format") |
 | `SONNE_RELEASES_DIR` | none | folder (read only) of `android.json` and the APKs served by `/update` and `/download`; in `deploy/docker-compose.yml`, the host folder `SONNE_RELEASES_HOST_DIR` mounted on `/releases` |
 
 ### Self-hosting with Docker

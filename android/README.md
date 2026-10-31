@@ -1,7 +1,7 @@
 # Sonne for Android
 
 The Android app of Sonne: it keeps a connection to the relay and rings the phone on request, even on silent. Since 1.1, it also broadcasts a Bluetooth beacon and accepts commands over Bluetooth (Nearby), and acts as a detector to find another Sonne phone.
-The full protocol is in `../docs/PROTOCOLE.md`.
+The full protocol is in `../docs/PROTOCOL.md`.
 
 ## Requirements
 
@@ -45,7 +45,7 @@ adb shell am broadcast -n dev.sidali.sonne/.DebugRelaisReceiver --es envoyer rin
 
 A cut-off build (v2 refused, 172-byte GATT writes, v3 always sent), to test step 4 of the transition: `./gradlew assembleDebug -PsonneCoupureV2=true`. The default since 1.6 is the transition (`ACCEPTER_V2` true in `app/build.gradle.kts`); it becomes false for app 1.8.0 (1.7.0 only changed the look).
 
-This receiver (`src/debug/`) is protected by the `DUMP` permission, which the adb shell holds and other apps do not: no installed app can redirect the phone to its own relay (whose page would receive the key at pairing). The pairing link is written to the log (`adb logcat -d -s SONNE_PAIR`). See `docs/TEST-BOUT-EN-BOUT.md`.
+This receiver (`src/debug/`) is protected by the `DUMP` permission, which the adb shell holds and other apps do not: no installed app can redirect the phone to its own relay (whose page would receive the key at pairing). The pairing link is written to the log (`adb logcat -d -s SONNE_PAIR`). See `docs/END-TO-END-TEST.md`.
 The release build only accepts `https://` / `wss://`, in the Settings screen as in the code (`Reglages.relaisValide`).
 
 ## Release signing
@@ -102,9 +102,9 @@ Without this file, `assembleRelease` produces an unsigned APK. **Back up these t
 
 ## Built-in update
 
-See `../docs/PROTOCOLE.md`, section "Mise à jour (app 1.2)", and `../tools/release-android.sh` to publish.
+See `../docs/PROTOCOL.md`, section "Update (app 1.2)", and `../tools/release-android.sh` to publish.
 Permission `REQUEST_INSTALL_PACKAGES`: the first time, the home screen explains the "Install unknown apps" permission and opens the system setting. Android's confirmation screen is always shown.
-For an end-to-end test, a higher version is built without touching the file: `./gradlew assembleDebug -PsonneVersionCode=5 -PsonneVersionName=1.2.1` (see `../docs/TEST-BOUT-EN-BOUT.md`).
+For an end-to-end test, a higher version is built without touching the file: `./gradlew assembleDebug -PsonneVersionCode=5 -PsonneVersionName=1.2.1` (see `../docs/END-TO-END-TEST.md`).
 
 ## Known limits
 

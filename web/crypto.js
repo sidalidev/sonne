@@ -1,4 +1,4 @@
-// Cryptographie de Sonne côté navigateur (voir docs/PROTOCOLE.md).
+// Cryptographie de Sonne côté navigateur (voir docs/PROTOCOL.md).
 // Module ES sans dépendance au DOM : il tourne dans le navigateur et dans Node 22
 // (globalThis.crypto.subtle). Il est vérifié contre docs/VECTEURS.json par
 // relay/test/web-crypto.test.js, comme relay/crypto.js et l'app Android.
@@ -138,7 +138,7 @@ export async function preparer(S) {
 }
 
 // ---------------------------------------------------------------------------
-// Protocole v3 : commandes chiffrées (docs/PROTOCOLE.md, « Protocole v3 : commandes chiffrées »)
+// Protocole v3 : commandes chiffrées (docs/PROTOCOL.md, « Protocol v3: encrypted commands »)
 //
 // Le relais ne voit plus qu'un message de taille fixe, toujours 172 octets :
 //   {"type":"cmd","v":3,"nonce":"<12 octets en hex>","enc":"<base64 de 80 octets>"}
@@ -290,7 +290,7 @@ export function accepteV3(etat) {
 }
 
 /**
- * Format des commandes vers un téléphone (PROTOCOLE.md, « Transition, puis coupure ») :
+ * Format des commandes vers un téléphone (PROTOCOL.md, « Transition, then cut-off ») :
  * 3 si le téléphone a annoncé cmdv ≥ 3 dans un état frais et authentifié (drapeau gardé pour
  * toujours), si le relais vient de refuser la v2 (400), ou après la coupure ; 2 sinon.
  * Jamais de retour à 2 une fois l'une de ces conditions vraie.

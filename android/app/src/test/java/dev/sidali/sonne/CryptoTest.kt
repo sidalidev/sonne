@@ -281,7 +281,7 @@ class CryptoTest {
     @Test
     fun transitionEnCours() {
         // App 1.6 : la v2 reste acceptée, un téléphone ne refuse pas ce qu'une page encore en
-        // transition peut envoyer. La coupure n'arrive qu'avec l'app 1.8 (docs/PROTOCOLE.md).
+        // transition peut envoyer. La coupure n'arrive qu'avec l'app 1.8 (docs/PROTOCOL.md).
         if (BuildConfig.VERSION_NAME.startsWith("1.6.")) assertTrue(Crypto.ACCEPTER_V2)
     }
 

@@ -1,126 +1,126 @@
 # Technical notes, versions 1.0 to 1.2
 
-Detailed notes from the first releases, kept as written at the time (in French). The human changelog is `CHANGELOG.md`.
+Detailed notes from the first releases, kept as written at the time. The human changelog is `CHANGELOG.md`.
 
-## 1.2.0 (2026-10-20) : mise à jour intégrée
+## 1.2.0 (2026-10-20): built-in update
 
-Comme les versions hors Play de Signal ou Telegram : l'app se met à jour elle-même, depuis le relais (le dépôt GitHub est privé). Protocole v2 inchangé (section « Mise à jour »).
+Like the non-Play versions of Signal or Telegram: the app updates itself, from the relay (the GitHub repository is private). Protocol v2 unchanged (section "Update (app 1.2)").
 
-### Ajouté
+### Added
 
-- **Relais 1.1.0** : `GET /update/android.json` (annonce `{ version, versionCode, url, sha256, certSha256, notes }`, cache 5 min) et `GET /download/<nom>.apk`, servis depuis `SONNE_RELEASES_DIR` (dossier hôte monté en lecture seule dans `deploy/docker-compose.yml`). Noms validés strictement, 404 pour tout le reste. Tests `relay/test/update.test.js` (traversée de dossier, encodages, fichiers absents, annonce invalide).
-- **App** : vérification une fois par jour dans le chien de garde existant et à l'ouverture, désactivable (Réglages, « Rechercher les mises à jour », actif par défaut, avec « Vérifier maintenant »). Notification « Mise à jour disponible » (nouveau canal Mises à jour, importance normale) et bandeau sur l'accueil.
-- Au tap : téléchargement OkHttp dans le cache, puis SHA-256 annoncé, paquet et `versionCode` attendus, et certificat de signature identique à celui de l'app installée et à `certSha256`. Sinon refus expliqué et fichier supprimé.
-- Installation par `PackageInstaller` avec `USER_ACTION_REQUIRED` (l'écran de confirmation d'Android est toujours montré), permission `REQUEST_INSTALL_PACKAGES`, explication et bouton vers le réglage « Installer des applis inconnues » quand il manque.
-- `tools/release-android.sh` : APK release signé, sommes, `android.json`, copie sur le VPS par scp, vérification en ligne, release GitHub avec l'APK et sa somme. `--sans-publication` pour préparer seulement.
-- Tests JVM `MiseAJourTest` : comparaison de versions, validation de l'annonce, SHA-256 d'un fichier, refus d'un certificat différent (faux octets).
-- `versionCode` et `versionName` surchargeables par `-PsonneVersionCode` et `-PsonneVersionName`, pour le test de bout en bout seulement.
+- **Relay 1.1.0**: `GET /update/android.json` (announcement `{ version, versionCode, url, sha256, certSha256, notes }`, 5 min cache) and `GET /download/<nom>.apk`, served from `SONNE_RELEASES_DIR` (host folder mounted read-only in `deploy/docker-compose.yml`). Names strictly validated, 404 for everything else. Tests `relay/test/update.test.js` (directory traversal, encodings, missing files, invalid announcement).
+- **App**: check once a day in the existing watchdog and when the app opens, can be turned off (Settings, "Check for updates", on by default, with "Check now"). "Update available" notification (new Updates channel, normal importance) and a banner on the home screen.
+- On tap: OkHttp download into the cache, then checks of the announced SHA-256, the expected package and `versionCode`, and a signing certificate identical to that of the installed app and to `certSha256`. Otherwise an explained refusal and the file is deleted.
+- Installation through `PackageInstaller` with `USER_ACTION_REQUIRED` (Android's confirmation screen is always shown), `REQUEST_INSTALL_PACKAGES` permission, an explanation and a button to the "Install unknown apps" setting when it is missing.
+- `tools/release-android.sh`: signed release APK, checksums, `android.json`, copy to the VPS with scp, online check, GitHub release with the APK and its checksum. `--sans-publication` to only prepare.
+- JVM tests `MiseAJourTest`: version comparison, announcement validation, SHA-256 of a file, refusal of a different certificate (fake bytes).
+- `versionCode` and `versionName` can be overridden with `-PsonneVersionCode` and `-PsonneVersionName`, for the end-to-end test only.
 
-## 1.1.0 (2026-10-19) : À proximité (Nearby)
+## 1.1.0 (2026-10-19): Nearby
 
-« Il n'est pas loin, je m'en rapproche, et je le fais sonner. » Ajout pur au protocole v2 (section « Proximité Bluetooth ») : relais et page web inchangés.
+"It's not far, I'm getting closer, and I make it ring." Pure addition to protocol v2 (section "Bluetooth proximity (v1.1)"): relay and web page unchanged.
 
-### Ajouté
+### Added
 
-- **Balise Bluetooth** émise par le service de veille **en mode recherche seulement** (voir plus bas) : publicité BLE legacy connectable, faible puissance (`TX_POWER_LOW`), 250 ms, données de service sous l'UUID Sonne `2af8c8b3-3a13-489b-a3a3-ac220005799b` = `id_ble` (8 octets) puis la version `0x01`. `id_ble = HMAC-SHA256(B, w)[0:8]`, `B = HKDF(S, "sonne-ble", 32)`, `w = floor(now / 15 min)` : seul un appareil qui connaît S la reconnaît, et elle change toutes les 15 min (l'ensemble d'émission est relancé, la pile tire une nouvelle adresse). Relancée au retour du Bluetooth, revérifiée par le chien de garde, rotation par alarme à la frontière de fenêtre.
-- **Serveur GATT** sur le même UUID : caractéristique Commande (écriture avec réponse) qui accepte exactement les commandes signées du relais, par le même chemin (`FiltreCommandes`, même mémoire de nonces : une commande reçue par Bluetooth puis par le relais n'est exécutée qu'une fois) ; caractéristique État (notification) avec l'état chiffré habituel. 4 connexions Sonne au plus (éviction de la plus ancienne sans commande valide), 5 s sans commande valide, 10 s après, budget de requêtes par connexion, 20 commandes valides par minute.
-- **Mes autres téléphones** : liste de chaînes connues (nom local, relais), ajout par scan de QR code (caméra, permission demandée au moment du scan), par lien collé ou par 12 mots, avec confirmation par le début de l'identifiant. Seules les clés dérivées (id, `K_sig`, `K_enc`, B) sont gardées, pas S, chiffrées par une clé de l'Android Keystore utilisable seulement téléphone déverrouillé, en stockage par identifiant. La clé de ce téléphone est refusée.
-- **Écran À proximité (Nearby)** depuis l'accueil (« Trouver un téléphone à proximité ») : scan BLE filtré sur l'UUID Sonne seulement au premier plan, reconnaissance pour w - 1, w et w + 1, signal lissé (moyenne exponentielle, τ = 2 s), jauge de 0 à 5 (Perdu à Très chaud) avec hystérésis de 3 dB, « vu il y a x s » et dernière mesure, bip généré qui accélère (flux des notifications, désactivable), vibration, gros bouton Faire sonner par GATT si le téléphone a été vu il y a moins de 10 s, sinon (ou en cas d'échec) le même message signé par le relais ; bouton Arrêter.
-- Réglages : « Balise Bluetooth » (active par défaut) et « Bips de proximité ». Autorisations : ligne « Appareils à proximité » (`BLUETOOTH_ADVERTISE`, `BLUETOOTH_CONNECT`). Accueil : état de la balise et rappel quand le Bluetooth est éteint.
-- Permissions : `BLUETOOTH_ADVERTISE`, `BLUETOOTH_CONNECT`, `BLUETOOTH_SCAN` avec `neverForLocation` (pas de localisation), `CAMERA` (scan de QR seulement). Matériel Bluetooth et caméra non requis.
-- Version debug, pour les tests sur deux émulateurs : ajout d'un autre téléphone par adb (extra `pair` de `DebugRelaisReceiver`), journal de la reconnaissance des balises et du signal lissé (`SonneChercheur`), absents de la release.
-- Lecteur de QR code sans dépendance nouvelle : Camera2 et ZXing core (déjà présent).
-- Tests JVM : vecteur `ble` de `docs/VECTEURS.json` (B, `id_ble`, fenêtres voisines, données de service), lien vers secret, et `ProximiteTest` (données et filtre, reconnaissance sur trois fenêtres, lissage, niveaux et hystérésis, limite de débit, fraîcheur des états, statuts d'écriture GATT).
-- `relay/crypto.js` : `deriveCleBle`, `deriveBleId`, `fenetreBle`, avec leur vecteur et un test WebCrypto indépendant.
+- **Bluetooth beacon** emitted by the standby service **in search mode only** (see below): connectable legacy BLE advertising, low power (`TX_POWER_LOW`), 250 ms, service data under the Sonne UUID `2af8c8b3-3a13-489b-a3a3-ac220005799b` = `id_ble` (8 bytes) then version `0x01`. `id_ble = HMAC-SHA256(B, w)[0:8]`, `B = HKDF(S, "sonne-ble", 32)`, `w = floor(now / 15 min)`: only a device that knows S recognizes it, and it changes every 15 min (the advertising set is restarted, the stack picks a new address). Restarted when Bluetooth comes back, rechecked by the watchdog, rotated by an alarm at the window boundary.
+- **GATT server** on the same UUID: Command characteristic (write with response) that accepts exactly the signed commands from the relay, through the same path (`FiltreCommandes`, same nonce memory: a command received over Bluetooth and then through the relay is executed only once); Status characteristic (notification) with the usual encrypted status. At most 4 Sonne connections (eviction of the oldest one without a valid command), 5 s without a valid command, 10 s after, request budget per connection, 20 valid commands per minute.
+- **My other phones**: list of known chains (local name, relay), added by scanning a QR code (camera, permission requested at scan time), by pasted link or by 12 words, with confirmation by the start of the identifier. Only the derived keys (id, `K_sig`, `K_enc`, B) are kept, not S, encrypted with an Android Keystore key usable only while the phone is unlocked, in credential-encrypted storage. This phone's own key is refused.
+- **Nearby screen** from the home screen ("Find a phone nearby"): BLE scan filtered on the Sonne UUID in the foreground only, recognition for w - 1, w and w + 1, smoothed signal (exponential average, τ = 2 s), gauge from 0 to 5 (Lost to Very hot) with 3 dB hysteresis, "seen x s ago" and last measurement, generated beep that speeds up (notification stream, can be turned off), vibration, big Ring button over GATT if the phone was seen less than 10 s ago, otherwise (or on failure) the same signed message through the relay; Stop button.
+- Settings: "Bluetooth beacon" (on by default) and "Proximity beeps". Permissions: "Nearby devices" row (`BLUETOOTH_ADVERTISE`, `BLUETOOTH_CONNECT`). Home: beacon status and a reminder when Bluetooth is off.
+- Permissions: `BLUETOOTH_ADVERTISE`, `BLUETOOTH_CONNECT`, `BLUETOOTH_SCAN` with `neverForLocation` (no location), `CAMERA` (QR scan only). Bluetooth and camera hardware not required.
+- Debug build, for tests on two emulators: adding another phone through adb (`pair` extra of `DebugRelaisReceiver`), log of beacon recognition and of the smoothed signal (`SonneChercheur`), absent from the release.
+- QR code reader without any new dependency: Camera2 and ZXing core (already present).
+- JVM tests: `ble` vector from `docs/VECTEURS.json` (B, `id_ble`, neighboring windows, service data), link to secret, and `ProximiteTest` (data and filter, recognition over three windows, smoothing, levels and hysteresis, rate limit, status freshness, GATT write statuses).
+- `relay/crypto.js`: `deriveCleBle`, `deriveBleId`, `fenetreBle`, with their vector and an independent WebCrypto test.
 
-### Modifié (revue de sécurité et de fiabilité de la 1.1)
+### Changed (security and reliability review of 1.1)
 
-#### Critique
+#### Critical
 
-- **Mode recherche** : la balise et le serveur GATT ne tournent plus 24 h sur 24. Ils s'ouvrent pour 10 min après chaque commande acceptée (`ring`, `stop` ou `ping`, par le relais ou par Bluetooth), pendant la sonnerie, ou quand le relais est injoignable depuis une heure. Avant, la balise était connectable en permanence : n'importe qui à portée pouvait s'y connecter et lire le nom Bluetooth du téléphone (service GAP d'Android) et l'empreinte de sa base GATT, des valeurs fixes qui reliaient toutes les fenêtres entre elles. L'écran À proximité demande le mode recherche par le relais (`ping` signé, silencieux) à l'ouverture puis toutes les 8 min, et dit si la demande est passée. La notification de veille affiche « Recherche Bluetooth active ». Les Réglages conseillent un nom Bluetooth neutre.
+- **Search mode**: the beacon and the GATT server no longer run 24 hours a day. They open for 10 min after each accepted command (`ring`, `stop` or `ping`, through the relay or over Bluetooth), while ringing, or when the relay has been unreachable for an hour. Before, the beacon was connectable at all times: anyone in range could connect to it and read the phone's Bluetooth name (Android's GAP service) and the fingerprint of its GATT database, fixed values that linked all the windows together. The Nearby screen requests search mode through the relay (signed, silent `ping`) when it opens and then every 8 min, and says whether the request went through. The standby notification shows "Bluetooth search on". Settings recommend a neutral Bluetooth name.
 
-#### Majeur
+#### Major
 
-- Pistage par les détenteurs de S : B reste dérivée de S (les 12 mots et le lien suffisent à ajouter un téléphone dans Nearby), mais la balise n'émet plus qu'en mode recherche. L'écran Appairage prévient : qui a les 12 mots peut savoir quand le téléphone est à proximité pendant que la balise émet, et peut la faire émettre.
-- Serveur GATT : signature, fraîcheur et nonce inédit vérifiés avant la limite de 20 commandes par minute (un inconnu qui écrit des octets au hasard, ou qui rejoue une commande captée, ne bloque plus les vraies commandes) ; 2 écritures invalides par connexion, puis coupure ; écritures d'une connexion refusée ou coupée ignorées.
-- Serveur GATT : à saturation, éviction de la plus ancienne connexion sans commande valide au lieu de refuser le nouveau venu ; 5 s de vie sans commande valide (30 s avant).
-- Serveur GATT : budget de 10 requêtes ATT par connexion, puis coupure ; la mémoire des nonces n'est réécrite que si elle a changé.
-- Serveur GATT : une connexion n'est comptée qu'au premier accès au service Sonne. Montre, écouteurs et liens des autres apps ne prennent plus de place, et une place est libérée dès que Sonne coupe, sans attendre une déconnexion qui peut ne jamais venir.
-- Serveur GATT : `onServiceAdded` suivi ; prêt seulement sur succès, nouvel essai à 1, 2, 5, 10 puis 30 s (aussi quand `openGattServer` échoue juste après le retour du Bluetooth) ; la balise n'émet qu'une fois le service publié.
-- Chercheur : l'appareil du `ScanResult` est gardé (type d'adresse aléatoire) au lieu de `getRemoteDevice(adresse)`, qui vise une adresse publique depuis Android 13.
-- Chercheur : second essai de connexion sur un statut 133, 62 ou 8 reçu avant 3 s ; scan en pause pendant la connexion GATT.
-- Accusé : le téléphone notifie l'état (avec `ringing` attendu) avant le travail lourd de la sonnerie ; le chercheur attend 5 s (3 s avant) et, si l'écriture a été acceptée mais que rien ne revient et que le relais échoue, affiche « écrite par Bluetooth, sans accusé » au lieu d'un échec.
-- Batterie : le verrou de 30 s du chien de garde est relâché dès la réponse au battement (ou tout de suite s'il n'y a rien à attendre) ; celui de l'alarme de rotation dès la rotation faite.
-- GrapheneOS : la coupure automatique du Bluetooth (réglage `bluetooth_off_timeout`) est détectée quand elle est lisible et signalée sur l'accueil, dans les Autorisations et dans À proximité.
+- Tracking by holders of S: B is still derived from S (the 12 words and the link are enough to add a phone in Nearby), but the beacon now only emits in search mode. The Pairing screen warns: whoever has the 12 words can tell when the phone is nearby while the beacon emits, and can make it emit.
+- GATT server: signature, freshness and unseen nonce checked before the limit of 20 commands per minute (a stranger who writes random bytes, or who replays a captured command, no longer blocks real commands); 2 invalid writes per connection, then disconnection; writes from a refused or cut-off connection ignored.
+- GATT server: when full, eviction of the oldest connection without a valid command instead of refusing the newcomer; 5 s of life without a valid command (30 s before).
+- GATT server: budget of 10 ATT requests per connection, then disconnection; the nonce memory is only rewritten if it changed.
+- GATT server: a connection is only counted on its first access to the Sonne service. Watches, earbuds and other apps' links no longer take up a slot, and a slot is freed as soon as Sonne disconnects, without waiting for a disconnection that may never come.
+- GATT server: `onServiceAdded` tracked; ready only on success, retried at 1, 2, 5, 10 then 30 s (also when `openGattServer` fails right after Bluetooth comes back); the beacon only emits once the service is published.
+- Searcher: the device from the `ScanResult` is kept (random address type) instead of `getRemoteDevice(adresse)`, which targets a public address since Android 13.
+- Searcher: second connection attempt on a status 133, 62 or 8 received before 3 s; scan paused during the GATT connection.
+- Acknowledgement: the phone notifies the status (with `ringing` expected) before the heavy work of ringing; the searcher waits 5 s (3 s before) and, if the write was accepted but nothing comes back and the relay fails, shows "written over Bluetooth, no acknowledgement" instead of a failure.
+- Battery: the watchdog's 30 s wake lock is released as soon as the heartbeat is answered (or right away if there is nothing to wait for); the rotation alarm's lock as soon as the rotation is done.
+- GrapheneOS: automatic Bluetooth turn-off (setting `bluetooth_off_timeout`) is detected when it is readable and reported on the home screen, in Permissions and in Nearby.
 
-#### Mineur
+#### Minor
 
-- États notifiés par Bluetooth seulement aux connexions qui ont écrit une commande valide ; clair de l'état bourré à 320 octets (champ `pad`, modèle tronqué à 64 caractères) : la longueur du chiffré ne dit plus rien du modèle ni de la version. Le message d'état est écrit sans échappement (508 octets, toujours) : `JSONObject` échappait les « / » du base64 et pouvait dépasser les 512 octets d'un attribut GATT (trouvé au test sur émulateurs).
-- Chercheur : signal suivi adresse par adresse (un clone qui réémet `id_ble` ne détourne plus la jauge ni l'envoi), jusqu'à 3 adresses récentes essayées pour Faire sonner, alerte quand deux adresses émettent le même `id_ble` plus de 3 s.
-- Mes autres téléphones : stockage par identifiant (illisible avant le premier déverrouillage), clé du Keystore `setUnlockedDeviceRequired`, seulement les clés dérivées, liste oubliée de la mémoire en quittant l'écran. L'ancienne liste est déplacée une fois.
-- Sauvegarde : les domaines `device_*` (stockage chiffré par appareil) sont exclus de la sauvegarde cloud et du transfert d'appareil.
-- Nonces et ordre des ring/stop écrits de façon synchrone (`commit`) avant d'exécuter la commande.
-- Balise : relancée après la déconnexion d'un client GATT et quand la pile la désactive (`onAdvertisingEnabled`) ; `id_ble` journalisé en debug seulement.
-- Accueil : l'état de la balise suit les rappels de la pile (émise, refusée, arrêtée), avec un nouvel essai court en cas d'échec.
-- Serveur GATT : verrou court entre la réception d'une écriture et son traitement ; notifications en file, une à la fois, codes de retour journalisés.
-- Chercheur : suivi en direct de l'état du Bluetooth (relance du scan au retour), relance d'un scan muet depuis 60 s ; démarrages de scan limités à 4 par 30 s glissantes (au lieu d'un écart fixe de 10 s, qui retardait le scan au retour sur l'écran).
+- Statuses notified over Bluetooth only to connections that wrote a valid command; status plaintext padded to 320 bytes (`pad` field, model truncated to 64 characters): the ciphertext length no longer reveals anything about the model or the version. The status message is written without escaping (508 bytes, always): `JSONObject` escaped the "/" of base64 and could exceed the 512 bytes of a GATT attribute (found while testing on emulators).
+- Searcher: signal tracked address by address (a clone that re-emits `id_ble` no longer hijacks the gauge or the send), up to 3 recent addresses tried for Ring, alert when two addresses emit the same `id_ble` for more than 3 s.
+- My other phones: credential-encrypted storage (unreadable before the first unlock), Keystore key `setUnlockedDeviceRequired`, only the derived keys, list dropped from memory when leaving the screen. The old list is moved once.
+- Backup: the `device_*` domains (device-encrypted storage) are excluded from cloud backup and device transfer.
+- Nonces and ring/stop ordering written synchronously (`commit`) before executing the command.
+- Beacon: restarted after a GATT client disconnects and when the stack disables it (`onAdvertisingEnabled`); `id_ble` logged in debug only.
+- Home: the beacon status follows the stack's callbacks (emitting, refused, stopped), with a short retry on failure.
+- GATT server: short lock between receiving a write and processing it; notifications queued, one at a time, return codes logged.
+- Searcher: live tracking of the Bluetooth state (scan restarted when it comes back), restart of a scan that has been silent for 60 s; scan starts limited to 4 per sliding 30 s (instead of a fixed 10 s gap, which delayed the scan when returning to the screen).
 
-#### Écarté
+#### Dismissed
 
-- Adresse non résolvable pour la balise : `setOwnAddressType` est réservé aux apps système (`BLUETOOTH_PRIVILEGED`, absent du SDK public). Limite documentée.
-- Secret de balise distinct de S : il faudrait un second appairage téléphone à téléphone, et les 12 mots ne suffiraient plus pour Nearby. Le mode recherche borne le pistage aux moments où l'on cherche.
-- Intervalle de 1 s pour la balise : sans objet tant qu'elle n'émet qu'en mode recherche ; 250 ms gardé pour la réactivité de la jauge.
+- Non-resolvable address for the beacon: `setOwnAddressType` is reserved for system apps (`BLUETOOTH_PRIVILEGED`, absent from the public SDK). Documented limit.
+- Beacon secret separate from S: it would require a second phone-to-phone pairing, and the 12 words would no longer be enough for Nearby. Search mode limits tracking to the moments when someone is searching.
+- 1 s interval for the beacon: irrelevant as long as it only emits in search mode; 250 ms kept for gauge responsiveness.
 
 ## 1.0.1 (2026-10-18)
-- App Android en anglais par défaut, français en traduction.
+- Android app in English by default, French as a translation.
 
 ## 1.0.0 (2026-10-18)
 
-### Ajouté
+### Added
 
-- Socle du dépôt : licence Apache-2.0, `.gitignore`, README.
-- `relay/crypto.js` : identifiant, clés HKDF, commandes signées (HMAC-SHA256), états chiffrés (AES-256-GCM), 12 mots BIP39 et lien d'appairage.
-- `docs/VECTEURS.json` : vecteurs de test partagés, générés par `npm run vecteurs`.
-- Tests `node --test` du module de cryptographie, recoupés avec WebCrypto et les vecteurs BIP39 officiels.
-- `relay/server.js` : relais HTTP et WebSocket (téléphone, contrôleurs, `/api/cmd`, `/api/presence`, `/health`), file d'attente de 15 min, limites de débit, arrêt propre.
-- `web/` : page de commande sans framework (WebCrypto), installable comme PWA, plusieurs téléphones, journal.
-- `relay/tools/faux-telephone.js` : faux téléphone pour essayer la page sans l'app.
-- `relay/tools/controleur.js` : contrôleur en ligne de commande (envoie `ring`, `stop` ou `ping` et déchiffre les états reçus).
-- App Android, version debug : adresse du relais posable par adb (récepteur `DebugRelaisReceiver` protégé par la permission `DUMP`) et lien d'appairage dans le journal (étiquette `SONNE_PAIR`), pour les tests de bout en bout.
-- `docs/TEST-BOUT-EN-BOUT.md` : scénario et résultats du test sur émulateur Android 16.
-- `relay/Dockerfile` et `deploy/docker-compose.yml` (Traefik, `sonne.sidali.dev`).
+- Repository foundation: Apache-2.0 license, `.gitignore`, README.
+- `relay/crypto.js`: identifier, HKDF keys, signed commands (HMAC-SHA256), encrypted statuses (AES-256-GCM), 12 BIP39 words and pairing link.
+- `docs/VECTEURS.json`: shared test vectors, generated by `npm run vecteurs`.
+- `node --test` tests of the cryptography module, cross-checked with WebCrypto and the official BIP39 vectors.
+- `relay/server.js`: HTTP and WebSocket relay (phone, controllers, `/api/cmd`, `/api/presence`, `/health`), 15 min queue, rate limits, graceful shutdown.
+- `web/`: command page without a framework (WebCrypto), installable as a PWA, several phones, log.
+- `relay/tools/faux-telephone.js`: fake phone to try the page without the app.
+- `relay/tools/controleur.js`: command-line controller (sends `ring`, `stop` or `ping` and decrypts the received statuses).
+- Android app, debug build: relay address settable through adb (`DebugRelaisReceiver` receiver protected by the `DUMP` permission) and pairing link in the log (tag `SONNE_PAIR`), for end-to-end tests.
+- `docs/END-TO-END-TEST.md`: scenario and results of the test on an Android 16 emulator.
+- `relay/Dockerfile` and `deploy/docker-compose.yml` (Traefik, `sonne.sidali.dev`).
 
-### Modifié (revue de sécurité et d'usage, protocole v2)
+### Changed (security and usability review, protocol v2)
 
-v1 et v2 ne sont pas compatibles : relais, page et app doivent être mis à jour ensemble. La page convertit seule ses téléphones enregistrés (nouvel id, clés rangées dans IndexedDB) ; l'app garde son secret.
+v1 and v2 are not compatible: relay, page and app must be updated together. The page converts its saved phones on its own (new id, keys stored in IndexedDB); the app keeps its secret.
 
-#### Critique
+#### Critical
 
-- App : `targetSdk 34` au lieu de 36. À partir de 35, Android 15 et plus empêchent l'app de lever Ne pas déranger : la sonnerie restait muette en « Aucune interruption ». Vérifié sur Android 16 : le mode est levé pendant la sonnerie et rétabli à l'arrêt. `Ringer.dndPilotable` garde le code correct si ce choix change (pas d'appel, pas de restauration dangereuse, alerte sur l'accueil).
-- App : Direct Boot. Service, récepteurs et écran de sonnerie `directBootAware`, démarrage sur `LOCKED_BOOT_COMPLETED`, préférences et secret en stockage chiffré par appareil (migration unique depuis l'ancien stockage), son de secours dans le cache de ce stockage. Sonne est joignable après un redémarrage automatique, avant la saisie du code.
+- App: `targetSdk 34` instead of 36. From 35 on, Android 15 and later prevent the app from lifting Do Not Disturb: the ringing stayed silent in "Total silence". Verified on Android 16: the mode is lifted while ringing and restored on stop. `Ringer.dndPilotable` keeps the code correct if this choice changes (no call, no dangerous restore, alert on the home screen).
+- App: Direct Boot. Service, receivers and ringing screen `directBootAware`, start on `LOCKED_BOOT_COMPLETED`, preferences and secret in device-encrypted storage (one-time migration from the old storage), fallback sound in that storage's cache. Sonne is reachable after an automatic restart, before the code is entered.
 
-#### Majeur
+#### Major
 
-- Protocole v2 : le téléphone prouve qu'il détient S en présentant `P = HKDF(S, "sonne-phone", 16)` ; `id = SHA-256("sonne-id" ‖ P)[0:32]`, recalculé par le relais. Connaître l'id ne permet plus d'éjecter le vrai téléphone ni de prendre sa file.
-- Relais : la file garde les 5 dernières `ring` et `stop` (sans doublon de nonce) au lieu de la seule dernière ; une commande livrée à une connexion qui meurt avant l'état suivant est relivrée.
-- Relais : limites de connexions ouvertes (20 par IP, 10 000 au total, 16 navigateurs par téléphone).
-- Relais : ping du téléphone toutes les 4 min (coupure après 10 min) au lieu de 25 s, réglables par `SONNE_PHONE_PING_S` et `SONNE_PHONE_DEAD_S` ; les navigateurs gardent 25 s et 60 s. Battement applicatif `hb`.
-- App : chien de garde `AlarmManager` (toutes les 5 min, sans permission) pour le battement, l'état périodique et les reconnexions longues ; une connexion à moitié morte est détectée (pas de réponse au battement en 20 s). Plus de `pingInterval` OkHttp.
-- App : le volume et Ne pas déranger sont restaurés avant la mise au premier plan, qui ne fait plus planter le service si le système la refuse.
-- App : un secret illisible n'est plus remplacé en silence. Erreur passagère : nouvel essai. Perte établie (échecs définitifs répétés) : ancienne boîte gardée, alerte sur l'accueil, nouvelle clé seulement après confirmation.
-- App : premier lancement guidé. Phrase d'accroche sur l'écran Autorisations, puis passage direct à l'Appairage ; carte « Étape suivante : relie un navigateur » sur l'accueil tant que l'appairage n'a pas été ouvert. Ligne Ne pas déranger masquée là où elle ne sert à rien.
-- App : les 12 mots sont présentés comme le moyen de faire sonner le téléphone depuis n'importe quel navigateur, à noter sur papier ou dans un gestionnaire de mots de passe.
-- Page : demande de stockage persistant et avertissement Safari (7 jours sans visite).
-- README : installation (Obtainium, APK), premiers pas, limites.
+- Protocol v2: the phone proves it holds S by presenting `P = HKDF(S, "sonne-phone", 16)`; `id = SHA-256("sonne-id" ‖ P)[0:32]`, recomputed by the relay. Knowing the id no longer makes it possible to kick out the real phone or take its queue.
+- Relay: the queue keeps the last 5 `ring` and `stop` (no duplicate nonce) instead of only the last one; a command delivered to a connection that dies before the next status is redelivered.
+- Relay: limits on open connections (20 per IP, 10,000 in total, 16 browsers per phone).
+- Relay: phone ping every 4 min (disconnection after 10 min) instead of 25 s, configurable with `SONNE_PHONE_PING_S` and `SONNE_PHONE_DEAD_S`; browsers keep 25 s and 60 s. Application-level heartbeat `hb`.
+- App: `AlarmManager` watchdog (every 5 min, no permission) for the heartbeat, the periodic status and long reconnections; a half-dead connection is detected (no heartbeat reply within 20 s). No more OkHttp `pingInterval`.
+- App: volume and Do Not Disturb are restored before going to the foreground, which no longer crashes the service if the system refuses it.
+- App: an unreadable secret is no longer silently replaced. Transient error: retry. Established loss (repeated permanent failures): old box kept, alert on the home screen, new key only after confirmation.
+- App: guided first launch. Tagline on the Permissions screen, then straight to Pairing; "Next step: link a browser" card on the home screen as long as pairing has not been opened. Do Not Disturb row hidden where it serves no purpose.
+- App: the 12 words are presented as the way to ring the phone from any browser, to be written on paper or in a password manager.
+- Page: request for persistent storage and Safari warning (7 days without a visit).
+- README: installation (Obtainium, APK), first steps, limits.
 
-#### Mineur
+#### Minor
 
-- L'id ne passe plus dans les URL : `Sec-WebSocket-Protocol` pour les WebSocket, en-tête `X-Sonne-Id` pour `/api`.
-- Relais : limites par IP sur le préfixe /64 en IPv6, IPv4 mappées ramenées à l'IPv4 ; `SONNE_QUEUE_MIN` plafonné à 15.
-- App : anti rejeu par l'âge des nonces (gardés tant qu'ils sont dans la fenêtre, 2 000 au plus, refus au-delà) ; une `ring` ou une `stop` plus ancienne que la dernière acceptée est ignorée.
-- Page : états rejoués ou trop vieux (plus de 20 min) ignorés ; ajout par lien ouvert directement soumis à confirmation avec le début de l'id, nom automatique préfixé par « Nouveau : » ; S n'est plus gardé, seulement des clés WebCrypto non exportables dans IndexedDB ; indice « Pas de nouvelles du téléphone » après un jour de silence ; plus de durée de file promise en dur.
-- Page : texte de l'écran vide plus clair (téléphone ou ordinateur), pied de page honnête sur le rôle du relais, contrastes AA en thème clair, cibles tactiles de 44 px.
-- App : `FLAG_SECURE` sur l'écran Appairage ; hôte du lien affiché et avertissement pour un relais personnalisé ; début de l'id affiché ; `http://` refusé en release (aussi dans le setter) ; adresse de relais de debug posée par un récepteur protégé par `DUMP` au lieu d'un extra de `MainActivity`.
-- App : reconnexion immédiate au retour du réseau après une perte totale ; notification de sonnerie orpheline retirée ; torche suivie par `TorchCallback` (pause puis reprise) ; repli sur le son de secours si la lecture échoue en cours de route ; WakeLock de sonnerie réarmé à chaque `ring`.
-- App : vert « Accordé » lisible en thème sombre, avec une coche ; textes corrigés (« Plein écran sur l'écran verrouillé », « par-dessus », « Garde-les », « Changer la clé » au lieu de « Nouvelle chaîne »).
-- Protocole : `specialUse` au lieu de `dataSync` (avec la raison), limites et messages `relayed` et `error` documentés, liste réelle des fichiers de la page, limite honnête sur l'historique du navigateur.
+- The id no longer goes in URLs: `Sec-WebSocket-Protocol` for WebSockets, `X-Sonne-Id` header for `/api`.
+- Relay: per-IP limits on the /64 prefix in IPv6, IPv4-mapped addresses reduced to IPv4; `SONNE_QUEUE_MIN` capped at 15.
+- App: replay protection by nonce age (kept while they are within the window, 2,000 at most, refused beyond that); a `ring` or `stop` older than the last accepted one is ignored.
+- Page: replayed or too old statuses (more than 20 min) ignored; adding through a directly opened link requires confirmation with the start of the id, automatic name prefixed with "New: "; S is no longer kept, only non-exportable WebCrypto keys in IndexedDB; "No news from the phone" hint after a day of silence; no more hard-coded promised queue duration.
+- Page: clearer empty-screen text (phone or computer), honest footer about the relay's role, AA contrast in light theme, 44 px touch targets.
+- App: `FLAG_SECURE` on the Pairing screen; link host displayed and warning for a custom relay; start of the id displayed; `http://` refused in release (also in the setter); debug relay address set by a receiver protected by `DUMP` instead of a `MainActivity` extra.
+- App: immediate reconnection when the network comes back after a total loss; orphaned ringing notification removed; flashlight tracked by `TorchCallback` (pause then resume); fallback to the backup sound if playback fails midway; ringing WakeLock rearmed on each `ring`.
+- App: "Granted" green readable in dark theme, with a check mark; texts corrected ("Full screen over the lock screen", "over", "Keep them", "Change key" instead of "New chain").
+- Protocol: `specialUse` instead of `dataSync` (with the reason), limits and `relayed` and `error` messages documented, actual list of the page's files, honest limit on browser history.

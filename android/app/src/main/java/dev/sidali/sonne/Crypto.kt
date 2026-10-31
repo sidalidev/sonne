@@ -11,7 +11,7 @@ import kotlin.math.abs
 import org.json.JSONObject
 
 /**
- * Cryptographie de Sonne, conforme à docs/PROTOCOLE.md et à relay/crypto.js.
+ * Cryptographie de Sonne, conforme à docs/PROTOCOL.md et à relay/crypto.js.
  * Fonctions pures, sans dépendance Android : testables sur la JVM.
  */
 object Crypto {
@@ -199,7 +199,7 @@ object Crypto {
     }
 
     // ---------------------------------------------------------------------
-    // Protocole v3 : commandes chiffrées (PROTOCOLE.md, « Protocole v3 : commandes chiffrées »)
+    // Protocole v3 : commandes chiffrées (PROTOCOL.md, « Protocol v3: encrypted commands »)
     //
     // Le relais et un observateur Bluetooth ne voient plus qu'un message de taille fixe :
     //   {"type":"cmd","v":3,"nonce":"<12 octets en hex>","enc":"<base64 de 80 octets>"}  (172 octets)
@@ -539,7 +539,7 @@ object Crypto {
 
 
 /**
- * Filtre des commandes reçues (PROTOCOLE.md, « Acceptation par le téléphone »), v2 et v3 :
+ * Filtre des commandes reçues (PROTOCOL.md, « Acceptance by the phone »), v2 et v3 :
  * forme, signature (v2) ou authentification GCM liée à l'id (v3), fraîcheur (15 min), nonces
  * déjà vus, capacité et ordre. Une seule mémoire de nonces et un seul dernierTsOrdre pour les
  * deux formats, pour le relais et le Bluetooth : une commande reçue par l'un puis par l'autre

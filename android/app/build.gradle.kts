@@ -63,15 +63,15 @@ android {
         // targetSdk 34 voulu (distribution hors Play, par Obtainium) : à partir de 35, Android 15
         // et plus interdisent à l'app de lever le mode Ne pas déranger global (compat change
         // MANAGE_GLOBAL_ZEN_VIA_IMPLICIT_RULES), et la sonnerie resterait muette en
-        // « Aucune interruption ». compileSdk 36 reste. Voir docs/PROTOCOLE.md et android/README.md.
+        // « Aucune interruption ». compileSdk 36 reste. Voir docs/PROTOCOL.md et android/README.md.
         targetSdk = 34
         // Surchargeables pour les tests de bout en bout de la mise à jour intégrée seulement
-        // (docs/TEST-BOUT-EN-BOUT.md) : -PsonneVersionCode=5 -PsonneVersionName=1.2.1
+        // (docs/END-TO-END-TEST.md) : -PsonneVersionCode=5 -PsonneVersionName=1.2.1
         versionCode = (findProperty("sonneVersionCode") as String?)?.toInt() ?: 12
         versionName = (findProperty("sonneVersionName") as String?) ?: "1.7.0"
         buildConfigField("String", "SECURITY_REVIEW", "\"$derniereRevue\"")
         // Commandes v2 signées encore acceptées et envoyées (transition de la 1.6, voir
-        // docs/PROTOCOLE.md, « Transition, puis coupure de l'ancien format »). Passe à false
+        // docs/PROTOCOL.md, « Transition, then cut-off of the old format »). Passe à false
         // pour l'app 1.8.0, jamais avant que le relais et la page de la coupure soient déployés
         // (la 1.7.0 n'a changé que l'apparence).
         // -PsonneCoupureV2=true construit une version coupée, pour les tests de bout en bout seulement.

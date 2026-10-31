@@ -1,5 +1,5 @@
 {
-  "description": "Vecteurs de test Sonne v2 et v3 (voir docs/PROTOCOLE.md). Toutes les valeurs binaires sont en hex minuscule sauf mention contraire. P = HKDF-SHA256(S, sel vide, sonne-phone, 16) et id = hex(SHA-256(sonne-id || P))[0:32]. Les commandes chiffrées (protocole v3) sont dans le bloc commandes_v3, en dernier.",
+  "description": "Vecteurs de test Sonne v2 et v3 (voir docs/PROTOCOL.md). Toutes les valeurs binaires sont en hex minuscule sauf mention contraire. P = HKDF-SHA256(S, sel vide, sonne-phone, 16) et id = hex(SHA-256(sonne-id || P))[0:32]. Les commandes chiffrées (protocole v3) sont dans le bloc commandes_v3, en dernier.",
   "S": "000102030405060708090a0b0c0d0e0f",
   "S_base64url": "AAECAwQFBgcICQoLDA0ODw",
   "P": "07bbb4216c337a4037c488b4a96e58f0",

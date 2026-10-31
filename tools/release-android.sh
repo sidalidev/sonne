@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Publishes an Android version of Sonne (built-in update, see docs/PROTOCOLE.md, "Mise à jour").
+# Publishes an Android version of Sonne (built-in update, see docs/PROTOCOL.md, "Update (app 1.2)").
 #
 #   tools/release-android.sh --notes "Short text, in English"   # builds, publishes to the server and GitHub
 #   tools/release-android.sh --sans-publication                 # builds and prepares only

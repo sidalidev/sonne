@@ -117,7 +117,7 @@ object Ringer {
      * Appelé à chaque démarrage ou arrêt effectif de la sonnerie. `accuse` est vrai quand le
      * changement vient d'une commande dont l'état d'accusé, déjà parti, porte la bonne valeur
      * de « ringing » : la veille n'envoie alors pas de second état (un seul état par commande,
-     * PROTOCOLE.md, « Réponse : un seul état par commande »).
+     * PROTOCOL.md, « Response: a single status per command »).
      */
     @Volatile
     var surChangement: ((sonne: Boolean, accuse: Boolean) -> Unit)? = null

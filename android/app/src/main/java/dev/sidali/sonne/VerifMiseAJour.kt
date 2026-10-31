@@ -23,7 +23,7 @@ enum class RaisonEchec { RESEAU, TAILLE, SHA256, CERTIFICAT, PAQUET, STOCKAGE, I
 /**
  * Vérifications de la mise à jour intégrée, en Kotlin pur (testées sur la JVM) :
  * comparaison de versions, SHA-256 du fichier, certificat de signature.
- * Voir docs/PROTOCOLE.md, section « Mise à jour ».
+ * Voir docs/PROTOCOL.md, section « Update (app 1.2) ».
  */
 object VerifMiseAJour {
 

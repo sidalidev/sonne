@@ -1,4 +1,4 @@
-// Cryptographie de Sonne (voir docs/PROTOCOLE.md).
+// Cryptographie de Sonne (voir docs/PROTOCOL.md).
 // Fonctions pures, sans état, utilisables par le relais, les tests et les outils.
 // Tout repose sur node:crypto, aucune dépendance externe.
 
@@ -318,7 +318,7 @@ export function fromLink(url) {
 }
 
 // ---------------------------------------------------------------------------
-// Protocole v3 : commandes chiffrées (PROTOCOLE.md, « Protocole v3 : commandes chiffrées »)
+// Protocole v3 : commandes chiffrées (PROTOCOL.md, « Protocol v3: encrypted commands »)
 //
 // Le relais et un observateur Bluetooth ne voient plus qu'un message de taille fixe :
 //   {"type":"cmd","v":3,"nonce":"<12 octets en hex>","enc":"<base64 de 80 octets>"}  (172 octets)
@@ -378,7 +378,7 @@ const RE_NONCE_V3 = /^[0-9a-f]{24}$/;
 const RE_ENC_V3 = /^[A-Za-z0-9+/]{107}=$/;
 const NOMS_COMMANDE = Object.freeze(Object.fromEntries(Object.entries(CODES_COMMANDE).map(([n, c]) => [c, n])));
 
-/** Erreur de lecture d'une commande, avec sa raison (voir PROTOCOLE.md, ordre des vérifications). */
+/** Erreur de lecture d'une commande, avec sa raison (voir PROTOCOL.md, ordre des vérifications). */
 function refus(raison, texte) {
   return Object.assign(new Error(texte ?? `Commande refusée : ${raison}`), { raison });
 }
@@ -583,7 +583,7 @@ export function accepteV3(etat) {
 }
 
 /**
- * Filtre de référence du téléphone (PROTOCOLE.md, « Acceptation par le téléphone ») : forme,
+ * Filtre de référence du téléphone (PROTOCOL.md, « Acceptance by the phone ») : forme,
  * authentification, fraîcheur (15 min), anti rejeu par l'âge, capacité, ordre des ring et stop.
  * Une seule mémoire de nonces pour v2 et v3, pour le relais et le Bluetooth.
  *

@@ -41,7 +41,7 @@ sealed class EtatMaj {
 
 /**
  * Mise à jour intégrée, sans magasin (comme les versions hors Play de Signal ou Telegram).
- * Voir docs/PROTOCOLE.md, section « Mise à jour ».
+ * Voir docs/PROTOCOL.md, section « Update (app 1.2) ».
  *
  * - Vérification : GET <relais>/update/android.json une fois par jour (chien de garde de la
  *   veille) et à l'ouverture de l'app, si le réglage est actif. versionCode distant plus grand

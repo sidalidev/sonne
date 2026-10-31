@@ -1,4 +1,4 @@
-// Page de commande de Sonne (voir docs/PROTOCOLE.md, section « Page web », protocole v2,
+// Page de commande de Sonne (voir docs/PROTOCOL.md, section « Web page », protocole v2,
 // commandes chiffrées v3). Sans framework. Les clés restent dans ce navigateur (IndexedDB, clés
 // WebCrypto non exportables : le secret S lui-même n'est pas gardé) ; le relais ne reçoit que
 // l'id et des messages chiffrés de taille fixe (commandes de 172 octets, états de 508).
@@ -57,7 +57,7 @@ const SILENCE_SUSPECT_MS = 24 * 60 * 60_000;
 /** Téléphones qui ont annoncé les commandes chiffrées : { id: true }, jamais remis à faux. */
 const CLE_CMDV3 = "sonne.cmdv3";
 /**
- * Coupure de l'ancien format (docs/PROTOCOLE.md, « Transition, puis coupure ») : false pendant la
+ * Coupure de l'ancien format (docs/PROTOCOL.md, « Transition, then cut-off ») : false pendant la
  * transition (page 1.6), true à l'étape 3 (page 1.7), où tout part en v3 sans regarder cmdv.
  */
 const COUPURE_V2 = false;

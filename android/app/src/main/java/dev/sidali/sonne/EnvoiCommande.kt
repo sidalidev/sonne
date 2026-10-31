@@ -53,7 +53,7 @@ sealed class Resultat {
  * message, avec le même nonce, par le relais. Le téléphone ne l'exécutera jamais deux fois.
  * Les rappels arrivent sur le fil principal.
  *
- * Format (PROTOCOLE.md, « Transition ») : commande chiffrée v3 (172 octets, ni le type ni les
+ * Format (PROTOCOL.md, « Transition, then cut-off ») : commande chiffrée v3 (172 octets, ni le type ni les
  * paramètres ne sont lisibles en route) si le téléphone a annoncé cmdv ≥ 3 dans un état frais,
  * ou toujours après la coupure ; sinon commande signée v2. Un 400 du relais à une v2 (relais
  * déjà coupé) fait renvoyer la même intention en v3, avec un nouveau nonce ; jamais l'inverse.

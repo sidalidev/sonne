@@ -1,4 +1,4 @@
-// Relais de Sonne (voir docs/PROTOCOLE.md, sections « Relais » et « Protocole v3 : commandes chiffrées »).
+// Relais de Sonne (voir docs/PROTOCOL.md, sections « Relay » et « Protocol v3: encrypted commands »).
 //
 // Rôle : faire passer des messages opaques entre un téléphone et ses contrôleurs.
 // Le relais ne connaît que l'id et, pour le téléphone, la preuve P dont l'id est

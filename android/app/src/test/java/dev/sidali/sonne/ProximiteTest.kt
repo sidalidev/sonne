@@ -9,7 +9,7 @@ import org.json.JSONObject
 import org.junit.Test
 import kotlin.math.exp
 
-/** Logique pure de la proximité Bluetooth (docs/PROTOCOLE.md, « Proximité Bluetooth »). */
+/** Logique pure de la proximité Bluetooth (docs/PROTOCOL.md, « Bluetooth proximity »). */
 class ProximiteTest {
 
     private val s = Crypto.depuisHex("000102030405060708090a0b0c0d0e0f")

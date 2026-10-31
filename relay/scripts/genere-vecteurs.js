@@ -35,7 +35,7 @@ const NONCE_CMD = "00112233445566778899aabbccddeeff";
 const NONCE_ETAT = "0a0b0c0d0e0f101112131415";
 // Fenêtre de la balise Bluetooth qui contient TS : floor(1792300000000 / 900000).
 const W = fenetreBle(TS);
-// Octet de version des données de service de la balise (PROTOCOLE.md, Proximité Bluetooth).
+// Octet de version des données de service de la balise (PROTOCOL.md, Bluetooth proximity).
 const VERSION_BALISE = "01";
 // L'ordre des champs compte : c'est l'ordre de sérialisation attendu partout.
 const ETAT = { ts: TS, ringing: false, battery: 77, charging: false, app: "1.0.0", ack: null, model: "Test" };
@@ -47,7 +47,7 @@ const etat = encryptState(S, id, ETAT, NONCE_ETAT);
 
 const vecteurs = {
   description:
-    "Vecteurs de test Sonne v2 et v3 (voir docs/PROTOCOLE.md). Toutes les valeurs binaires sont en hex minuscule sauf mention contraire. P = HKDF-SHA256(S, sel vide, sonne-phone, 16) et id = hex(SHA-256(sonne-id || P))[0:32]. Les commandes chiffrées (protocole v3) sont dans le bloc commandes_v3, en dernier.",
+    "Vecteurs de test Sonne v2 et v3 (voir docs/PROTOCOL.md). Toutes les valeurs binaires sont en hex minuscule sauf mention contraire. P = HKDF-SHA256(S, sel vide, sonne-phone, 16) et id = hex(SHA-256(sonne-id || P))[0:32]. Les commandes chiffrées (protocole v3) sont dans le bloc commandes_v3, en dernier.",
   S,
   S_base64url: Buffer.from(S, "hex").toString("base64url"),
   P: derivePreuve(S).toString("hex"),
@@ -84,7 +84,7 @@ const vecteurs = {
 };
 
 // ---------------------------------------------------------------------------
-// Protocole v3 : commandes chiffrées (PROTOCOLE.md, « Protocole v3 : commandes chiffrées »)
+// Protocole v3 : commandes chiffrées (PROTOCOL.md, « Protocol v3: encrypted commands »)
 // ---------------------------------------------------------------------------
 
 function blocV3() {

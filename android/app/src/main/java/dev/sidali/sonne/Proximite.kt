@@ -4,7 +4,7 @@ import java.util.UUID
 import kotlin.math.exp
 
 /**
- * Proximité Bluetooth (v1.1, section « Proximité Bluetooth » du protocole) : constantes et
+ * Proximité Bluetooth (v1.1, section « Bluetooth proximity » du protocole) : constantes et
  * logique pure, sans dépendance Android, testées sur la JVM. La radio elle-même est dans
  * Balise.kt (émission), ServeurGatt.kt (commandes reçues) et Chercheur.kt (scan, envoi).
  */
