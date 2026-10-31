@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launch window: exactly the page color of the light theme, so the launch has no flash. -->
+    <color name="fond">#FBF7EF</color>
+    <!-- Sonne's color (honey), the same in the icon, the app and the notifications. -->
+    <color name="miel">#E9A23B</color>
+</resources>

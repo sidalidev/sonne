@@ -1,0 +1,9 @@
+**/node_modules
+.git
+android
+docs
+deploy
+relay/test
+relay/tools
+relay/scripts
+*.md

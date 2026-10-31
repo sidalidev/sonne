@@ -1,0 +1,20 @@
+{
+  "name": "sonne-relay",
+  "version": "1.2.0",
+  "description": "Relais WebSocket de Sonne : fait sonner un téléphone Android depuis une page web, sans compte.",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js",
+    "vecteurs": "node scripts/genere-vecteurs.js"
+  },
+  "dependencies": {
+    "ws": "^8.22.0"
+  }
+}

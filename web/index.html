@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Sonne</title>
+    <meta name="description" content="Ring your Android phone from your browser, even in silent mode. No account, no Google." />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#fbf7ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12201a" media="(prefers-color-scheme: dark)" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <header class="entete">
+      <div class="marque">
+        <img src="icon.svg" alt="" width="28" height="28" />
+        <span>Sonne</span>
+      </div>
+      <label class="choix" id="bloc-choix" hidden>
+        <span class="visuellement-cache">Phone</span>
+        <select id="choix-telephone"></select>
+      </label>
+    </header>
+
+    <main>
+      <!-- No phone yet: introduction and add form -->
+      <section id="vide" class="vide" hidden>
+        <h1>Ring your phone, even in silent mode.</h1>
+        <p>
+          In the Sonne app, open <strong>Your key</strong>. On a phone, scan the QR code with the camera.
+          On a computer, paste the link copied from the app here, or type the 12 words.
+        </p>
+        <div id="place-ajout-vide"></div>
+        <p class="discret">
+          On iPhone and Mac, Safari may forget this phone after 7 days without a visit. Add the page to your Home
+          Screen, or keep your 12 words.
+        </p>
+      </section>
+
+      <!-- Dashboard of the selected phone -->
+      <section id="tableau" class="tableau" hidden>
+        <div class="carte etat">
+          <div class="etat-haut">
+            <h1 id="nom-telephone">Phone</h1>
+            <span class="pastille" id="pastille" data-etat="connexion">
+              <span class="point" aria-hidden="true"></span>
+              <span id="pastille-texte">Connecting…</span>
+            </span>
+          </div>
+          <dl class="mesures">
+            <div>
+              <dt>Battery</dt>
+              <dd>
+                <span class="batterie" aria-hidden="true"><span class="batterie-niveau" id="batterie-niveau"></span></span>
+                <span id="batterie">?</span>
+              </dd>
+            </div>
+            <div>
+              <dt>Ringing</dt>
+              <dd id="sonnerie">?</dd>
+            </div>
+            <div>
+              <dt>Last update</dt>
+              <dd id="dernier-etat">none</dd>
+            </div>
+          </dl>
+          <p class="modele" id="modele"></p>
+          <p class="indice" id="indice" hidden>
+            No news from the phone. If you changed its key or relay in the app, add it here again.
+          </p>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="bouton-sonner" class="sonner" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="cloche">
+              <path d="M6.5 16v-4.5a5.5 5.5 0 0 1 11 0V16l1.3 1.6a.6.6 0 0 1-.5 1H5.7a.6.6 0 0 1-.5-1z" />
+              <path d="M10.2 20.6a2 2 0 0 0 3.6 0" />
+            </svg>
+            <span>Ring</span>
+          </button>
+          <p id="accuse" class="accuse" role="status" aria-live="polite"></p>
+          <button type="button" id="bouton-arreter" class="arreter" disabled>Stop</button>
+        </div>
+
+        <section class="carte journal" aria-labelledby="titre-journal">
+          <h2 id="titre-journal">Activity</h2>
+          <ol id="journal" class="journal-liste"></ol>
+          <p id="journal-vide" class="discret">Nothing yet.</p>
+        </section>
+      </section>
+
+      <!-- Phone management -->
+      <details id="gestion" class="carte gestion" hidden>
+        <summary>My phones</summary>
+        <ul id="liste-telephones" class="liste-telephones"></ul>
+        <h3>Add a phone</h3>
+        <div id="place-ajout-gestion"></div>
+      </details>
+
+      <form id="form-ajout" class="form-ajout" autocomplete="off">
+        <label for="saisie">Pairing link or 12 words</label>
+        <textarea
+          id="saisie"
+          rows="3"
+          spellcheck="false"
+          autocapitalize="off"
+          placeholder="https://sonne.sidali.dev/#s=… or abandon amount liar…"
+          required
+        ></textarea>
+        <label for="nom">Name (optional)</label>
+        <input id="nom" type="text" maxlength="40" placeholder="My phone" />
+        <button type="submit" class="primaire">Add</button>
+        <p id="erreur-ajout" class="erreur" role="alert"></p>
+      </form>
+    </main>
+
+    <footer class="pied">
+      <p>
+        Commands and status updates are encrypted in this browser. The relay only receives an identifier and messages of
+        a fixed size. The page it serves handles your key, so only use a relay you trust.
+      </p>
+      <p class="pied-liens"><a href="about.html">About</a></p>
+    </footer>
+  </body>
+</html>

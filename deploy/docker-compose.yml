@@ -1,0 +1,56 @@
+name: sonne
+services:
+  relay:
+    build:
+      context: ..
+      dockerfile: relay/Dockerfile
+    container_name: sonne-relay
+    restart: unless-stopped
+    environment:
+      - PORT=7700
+      # 15 au maximum : au-delà, le téléphone refuse la commande.
+      - SONNE_QUEUE_MIN=15
+      # Ping du téléphone toutes les 4 min, coupure après 10 min de silence (batterie).
+      # Traefik ne doit pas couper un WebSocket inactif 4 min (v3 : respondingTimeouts.readTimeout).
+      - SONNE_PHONE_PING_S=240
+      - SONNE_PHONE_DEAD_S=600
+      # Derrière Traefik : la limite par IP lit X-Forwarded-For.
+      - SONNE_TRUST_PROXY=1
+      # Mise à jour intégrée de l'app : android.json et APK publiés par tools/release-android.sh.
+      - SONNE_RELEASES_DIR=/releases
+    volumes:
+      # Host folder of published versions (android.json and APKs), set in the environment or in deploy/.env.
+      - ${SONNE_RELEASES_HOST_DIR:?set SONNE_RELEASES_HOST_DIR to the host folder of published versions}:/releases:ro
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:7700/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - traefik_web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_web"
+      - "traefik.http.services.sonne-relay.loadbalancer.server.port=7700"
+
+      # HTTPS router
+      - "traefik.http.routers.sonne-relay-secure.rule=Host(`sonne.sidali.dev`)"
+      - "traefik.http.routers.sonne-relay-secure.entrypoints=websecure"
+      - "traefik.http.routers.sonne-relay-secure.tls=true"
+      - "traefik.http.routers.sonne-relay-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sonne-relay-secure.service=sonne-relay"
+
+      # HTTP router (redirection vers HTTPS)
+      - "traefik.http.routers.sonne-relay.rule=Host(`sonne.sidali.dev`)"
+      - "traefik.http.routers.sonne-relay.entrypoints=web"
+      - "traefik.http.routers.sonne-relay.middlewares=sonne-https-redirect"
+      - "traefik.http.middlewares.sonne-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sonne-https-redirect.redirectscheme.permanent=true"
+
+networks:
+  traefik_web:
+    external: true

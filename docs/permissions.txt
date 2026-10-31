@@ -1,0 +1,17 @@
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.FOREGROUND_SERVICE
+android.permission.FOREGROUND_SERVICE_SPECIAL_USE
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+android.permission.WAKE_LOCK
+android.permission.POST_NOTIFICATIONS
+android.permission.USE_FULL_SCREEN_INTENT
+android.permission.VIBRATE
+android.permission.ACCESS_NOTIFICATION_POLICY
+android.permission.BLUETOOTH_ADVERTISE
+android.permission.BLUETOOTH_CONNECT
+android.permission.BLUETOOTH_SCAN
+android.permission.REQUEST_INSTALL_PACKAGES
+android.permission.CAMERA
+dev.sidali.sonne.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION

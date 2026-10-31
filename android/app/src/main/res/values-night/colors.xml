@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launch window, dark: exactly the page color of the dark theme. -->
+    <color name="fond">#12201A</color>
+</resources>

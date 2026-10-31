@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icon drawing: the bell, ink on honey, 24 unit grid scaled 1.5 and centered in the safe zone. Stroke 2.1, round caps and joins. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <group android:translateX="36" android:translateY="33.2" android:scaleX="1.5" android:scaleY="1.5">
+        <path android:strokeColor="#FF1F2A22" android:strokeWidth="2.1" android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:fillColor="#00000000"
+            android:pathData="M6.5 16v-4.5a5.5 5.5 0 0 1 11 0V16l1.3 1.6a.6.6 0 0 1-.5 1H5.7a.6.6 0 0 1-.5-1z" />
+        <path android:strokeColor="#FF1F2A22" android:strokeWidth="2.1" android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:fillColor="#00000000"
+            android:pathData="M10.2 20.6a2 2 0 0 0 3.6 0" />
+    </group>
+</vector>

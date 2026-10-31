@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Le secret S ne doit jamais quitter le téléphone : ni sauvegarde cloud ni transfert d'appareil.
+  allowBackup="false" ne coupe pas le transfert d'appareil à appareil (targetSdk 31 et plus) :
+  seules ces règles l'empêchent. Les domaines device_* couvrent le stockage chiffré par appareil
+  (Direct Boot), où vivent le secret, les réglages et la mémoire des nonces : copiés sans la clé
+  du Keystore, ils feraient afficher « clé perdue » au nouveau téléphone au lieu de repartir proprement.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" />
+        <exclude domain="file" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+        <exclude domain="device_root" />
+        <exclude domain="device_file" />
+        <exclude domain="device_database" />
+        <exclude domain="device_sharedpref" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" />
+        <exclude domain="file" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+        <exclude domain="device_root" />
+        <exclude domain="device_file" />
+        <exclude domain="device_database" />
+        <exclude domain="device_sharedpref" />
+    </device-transfer>
+</data-extraction-rules>

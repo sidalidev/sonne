@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Réseau : WebSocket vers le relais et suivi des changements de réseau. -->
+    <!-- Pulled in by androidx.credentials for biometric credential flows that Sonne never uses: removed. -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" tools:node="remove" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" tools:node="remove" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Veille : service de premier plan, relance au démarrage, exclusion de l'optimisation de batterie. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Sonnerie : notification plein écran, vibration, accès Ne pas déranger. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
+    <!-- Lampe torche : CameraManager.setTorchMode ne demande pas la permission CAMERA. -->
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+
+    <!-- Proximité Bluetooth (Nearby). Téléphone protégé : balise (ADVERTISE) et serveur GATT (CONNECT).
+         Chercheur : scan sans localisation (neverForLocation) et connexion GATT (CONNECT). -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false" />
+
+    <!-- Mise à jour intégrée : PackageInstaller, l'écran système de confirmation reste affiché. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- Scan du QR code d'un autre téléphone (Mes autres téléphones) : demandée au moment du scan seulement. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Sonne">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- directBootAware : la sonnerie et la veille marchent avant le premier déverrouillage
+             (redémarrage automatique d'un téléphone perdu, GrapheneOS ou Android). -->
+        <activity
+            android:name=".RingActivity"
+            android:directBootAware="true"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:showWhenLocked="true"
+            android:theme="@style/Theme.Sonne.Sonnerie"
+            android:turnScreenOn="true"
+            android:taskAffinity="dev.sidali.sonne.sonnerie" />
+
+        <service
+            android:name=".VeilleService"
+            android:directBootAware="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Keeps a connection to the Sonne relay so the phone can be rung remotely (a Google-free alternative to Find My Device)." />
+        </service>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:directBootAware="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".StopReceiver"
+            android:directBootAware="true"
+            android:exported="false" />
+
+        <!-- Résultat de l'installation d'une mise à jour (PackageInstaller). -->
+        <receiver
+            android:name=".InstallationRecue"
+            android:exported="false" />
+
+        <!-- Chien de garde de la veille (AlarmManager), voir VeilleService. -->
+        <receiver
+            android:name=".ChienDeGarde"
+            android:directBootAware="true"
+            android:exported="false" />
+    </application>
+</manifest>

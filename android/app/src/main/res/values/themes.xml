@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Minimal platform theme: everything is drawn in Compose. The window matches the first frame. -->
+    <style name="Theme.Sonne" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/fond</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <!-- Ringing screen: flat honey from the very first frame, in light and dark. -->
+    <style name="Theme.Sonne.Sonnerie">
+        <item name="android:windowBackground">@color/miel</item>
+    </style>
+</resources>

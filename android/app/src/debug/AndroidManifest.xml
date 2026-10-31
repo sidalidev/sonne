@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Version de développement : autorise ws:// et http:// (relais local, émulateur sur 10.0.2.2). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:usesCleartextTraffic="true">
+        <!--
+            Pose l'adresse du relais par adb (commande exacte dans DebugRelaisReceiver.kt).
+            Protégé par la permission DUMP, que le shell adb possède et pas les autres apps :
+            aucune app installée ne peut rediriger le téléphone vers son propre relais.
+        -->
+        <receiver
+            android:name=".DebugRelaisReceiver"
+            android:exported="true"
+            android:permission="android.permission.DUMP" />
+    </application>
+</manifest>

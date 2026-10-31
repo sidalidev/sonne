@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Sonne">
+  <!-- Flat honey, the bell as a rounded line drawing (24 unit grid, stroke 2.1, round caps and joins).
+       Full bleed so the maskable icon keeps its color to the edges; browsers and launchers round it. -->
+  <rect width="512" height="512" rx="154" fill="#e9a23b"/>
+  <g transform="translate(256 256) scale(10.667) translate(-12 -13.87)" fill="none" stroke="#1f2a22" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.5 16v-4.5a5.5 5.5 0 0 1 11 0V16l1.3 1.6a.6.6 0 0 1-.5 1H5.7a.6.6 0 0 1-.5-1z"/>
+    <path d="M10.2 20.6a2 2 0 0 0 3.6 0"/>
+  </g>
+</svg>

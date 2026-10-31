@@ -1,0 +1,267 @@
+{
+  "description": "Vecteurs de test Sonne v2 et v3 (voir docs/PROTOCOLE.md). Toutes les valeurs binaires sont en hex minuscule sauf mention contraire. P = HKDF-SHA256(S, sel vide, sonne-phone, 16) et id = hex(SHA-256(sonne-id || P))[0:32]. Les commandes chiffrées (protocole v3) sont dans le bloc commandes_v3, en dernier.",
+  "S": "000102030405060708090a0b0c0d0e0f",
+  "S_base64url": "AAECAwQFBgcICQoLDA0ODw",
+  "P": "07bbb4216c337a4037c488b4a96e58f0",
+  "id": "84c0833b15fe589c1806d87f10cd3f45",
+  "K_sig": "e06d34306ed7d6076ffb0c3c6fef1ee6d495e2055016fdbcacd41ac2766d0495",
+  "K_enc": "a61bac4fa078fdff5562aa7291bb53f8e3355d6872409eea62cd21aaf7d77223",
+  "mots": [
+    "abandon",
+    "amount",
+    "liar",
+    "amount",
+    "expire",
+    "adjust",
+    "cage",
+    "candy",
+    "arch",
+    "gather",
+    "drum",
+    "buyer"
+  ],
+  "lien": "https://sonne.sidali.dev/#s=AAECAwQFBgcICQoLDA0ODw",
+  "commande": {
+    "texte_signe": "ring|1792300000000|00112233445566778899aabbccddeeff",
+    "message": {
+      "type": "cmd",
+      "cmd": "ring",
+      "ts": 1792300000000,
+      "nonce": "00112233445566778899aabbccddeeff",
+      "sig": "7ffd2efada78790ab03160b91adce2ff48c30a2c5a388131d20fd354c684b660"
+    }
+  },
+  "etat": {
+    "plaintext": "{\"ts\":1792300000000,\"ringing\":false,\"battery\":77,\"charging\":false,\"app\":\"1.0.0\",\"ack\":null,\"model\":\"Test\"}",
+    "aad": "84c0833b15fe589c1806d87f10cd3f45",
+    "note": "AES-256-GCM, iv = nonce (12 octets), aad = id en UTF-8 (32 caractères ASCII), enc = base64 standard de (chiffré suivi de l'étiquette de 16 octets).",
+    "message": {
+      "type": "state",
+      "nonce": "0a0b0c0d0e0f101112131415",
+      "enc": "va/Itck1ZE7huz2yAMR+mHCrRUDtReUoioZQKrSdXzu0EpUMsjngTCvntJMnTc+dkeJaGEKWG/Bl2SGBBGanA2c/HY0Fo4SY1NuJ+gNd5flFRJEmmMQHxCPbJ08rmcKy0Wj3weQIBc/gPWsvxUiXqtTStytA2Rxu7rk="
+    }
+  },
+  "ble": {
+    "note": "Proximité Bluetooth (v1.1). B = HKDF-SHA256(S, sel vide, sonne-ble, 32 octets). w = floor(now_ms / 900000). id_ble = HMAC-SHA256(B, w en 8 octets big-endian)[0:8]. Données de service = id_ble suivi de l'octet de version 01.",
+    "B": "e7c57d0bfd05e2c1bb43ec45806133937f3d0c7932c09006e8636f81e9e664b7",
+    "w": 1991444,
+    "w_octets": "00000000001e6314",
+    "id_ble": "b79d4deeb73074a9",
+    "donnees_service": "b79d4deeb73074a901",
+    "id_ble_precedent": "a4351205e84ce033",
+    "id_ble_suivant": "302c4fbd19e9e857"
+  },
+  "commandes_v3": {
+    "note": "Protocole v3, commandes chiffrées. K_cmd = HKDF-Expand(K_sig, sonne-cmd-v3, 32) = HMAC-SHA256(K_sig, sonne-cmd-v3 || 01). enc = base64 standard de AES-256-GCM(K_cmd, iv = nonce de 12 octets, aad = sonne-cmd-v3| suivi de l'id, clair de 64 octets) : 80 octets, 108 caractères. Clair : version 03, commande (01 ring, 02 stop, 03 ping), ts sur 8 octets big-endian, durée en secondes sur 2 octets big-endian (0 = réglage), lampe sur 1 octet (0 = réglage, 1 allumée, 2 éteinte), 51 octets réservés à zéro. Message exact, toujours 172 octets : {\"type\":\"cmd\",\"v\":3,\"nonce\":\"…\",\"enc\":\"…\"}. Cas : chaque texte est soumis à un filtre neuf du téléphone à l'instant maintenant, après le message avant s'il y en a un ; phase transition = v2 encore accepté, coupure = v2 refusé.",
+    "K_cmd": "6fa80cf42a8dae8f3eb58e7dcaadfe843b87b4f319095bb3517c586e8f5ab730",
+    "aad_v3": "sonne-cmd-v3|84c0833b15fe589c1806d87f10cd3f45",
+    "v3_ring": {
+      "cmd": "ring",
+      "ts": 1792300000000,
+      "duree": 0,
+      "lampe": 0,
+      "clair": "0301000001a14d67a300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message": {
+        "type": "cmd",
+        "v": 3,
+        "nonce": "a0a1a2a3a4a5a6a7a8a9aaab",
+        "enc": "bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ="
+      },
+      "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"enc\":\"bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+      "octets": 172
+    },
+    "v3_stop": {
+      "cmd": "stop",
+      "ts": 1792300001000,
+      "duree": 0,
+      "lampe": 0,
+      "clair": "0302000001a14d67a6e8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message": {
+        "type": "cmd",
+        "v": 3,
+        "nonce": "b0b1b2b3b4b5b6b7b8b9babb",
+        "enc": "grTNTVzSN1eQwFIjs9NW7DzvnpVVqCPm+39oLQ0TowjBkWQe4W/dwmIns5wmEnzQSJvtH6tUAxbZ4WE/MDT65M+Q905boRYLoGyFpvKMjIg="
+      },
+      "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"b0b1b2b3b4b5b6b7b8b9babb\",\"enc\":\"grTNTVzSN1eQwFIjs9NW7DzvnpVVqCPm+39oLQ0TowjBkWQe4W/dwmIns5wmEnzQSJvtH6tUAxbZ4WE/MDT65M+Q905boRYLoGyFpvKMjIg=\"}",
+      "octets": 172
+    },
+    "v3_ping": {
+      "cmd": "ping",
+      "ts": 1792300002000,
+      "duree": 0,
+      "lampe": 0,
+      "clair": "0303000001a14d67aad0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message": {
+        "type": "cmd",
+        "v": 3,
+        "nonce": "c0c1c2c3c4c5c6c7c8c9cacb",
+        "enc": "L43Nqx1SYcTecbRMjGdTkfns59V4tSja8mkdxZE1e6JFz+W+upTaHW6EpuPo0r3vfWuvbXWYRYRyPzMjiDMunw7meWLkMDFBu3I6U1qUUpU="
+      },
+      "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"c0c1c2c3c4c5c6c7c8c9cacb\",\"enc\":\"L43Nqx1SYcTecbRMjGdTkfns59V4tSja8mkdxZE1e6JFz+W+upTaHW6EpuPo0r3vfWuvbXWYRYRyPzMjiDMunw7meWLkMDFBu3I6U1qUUpU=\"}",
+      "octets": 172
+    },
+    "v3_ring_parametres": {
+      "cmd": "ring",
+      "ts": 1792300003000,
+      "duree": 300,
+      "lampe": 2,
+      "clair": "0301000001a14d67aeb8012c02000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message": {
+        "type": "cmd",
+        "v": 3,
+        "nonce": "d0d1d2d3d4d5d6d7d8d9dadb",
+        "enc": "mL4aID6gH7ynwQufvYopV8I15Wdq3ddQR6L22GTGU6iIXOU+k+pSYanjeJK6UN8X3beVgoVb4hv95hEONEcPRiDHp+AjvVdg7x4tvb5fE8Q="
+      },
+      "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"d0d1d2d3d4d5d6d7d8d9dadb\",\"enc\":\"mL4aID6gH7ynwQufvYopV8I15Wdq3ddQR6L22GTGU6iIXOU+k+pSYanjeJK6UN8X3beVgoVb4hv95hEONEcPRiDHp+AjvVdg7x4tvb5fE8Q=\"}",
+      "octets": 172
+    },
+    "etat_v3": {
+      "clair": "{\"ts\":1792300000050,\"ringing\":true,\"battery\":77,\"charging\":false,\"app\":\"1.6.0\",\"ack\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"model\":\"Pixel 10 Pro\",\"cmdv\":3,\"pad\":\"                                                                                                                                                                       \"}",
+      "octets_clair": 320,
+      "message": {
+        "type": "state",
+        "nonce": "e0e1e2e3e4e5e6e7e8e9eaeb",
+        "enc": "H8jFnEMuIrtAsJiB+We3tduAhTEFKgEmyJqFc+Fv5SrPZJoV3vTDb+FEuU9WA0FmoZhS+qDzTuZszF0UtiV+fW8NyGzESVWKh8nrYTPmM/ywD537WOJPHFNBHB9z4t0mltFYzZUUFkFEbA3jE9zkk6XqstOECcE1eM7ZJS9rvHqfq/dFicJRUO4XDBc5yadbS6wgBLxBeARrGnhbBJQYc+bdh0XOiPMQX/ricMDc1YtgTRdkcNLOHFldeNDCaTWpPygzlMDzjaYxpGLTgcm/qKHu0NaZgemL3USIT6+nrBGz35VbX7ciaZoPScSJu80Mm45Noh3xr3WfQdv/FJOB2PE9EXreNA11yZW/dqeBDMi/zQB9cHwrescgPMgUmBnRi53OpZtpKESp/BjUomZ4VCP3F7gIAZQVHdmc4mA3aw365ejdm049xCTAFzXJR2an"
+      },
+      "texte": "{\"type\":\"state\",\"nonce\":\"e0e1e2e3e4e5e6e7e8e9eaeb\",\"enc\":\"H8jFnEMuIrtAsJiB+We3tduAhTEFKgEmyJqFc+Fv5SrPZJoV3vTDb+FEuU9WA0FmoZhS+qDzTuZszF0UtiV+fW8NyGzESVWKh8nrYTPmM/ywD537WOJPHFNBHB9z4t0mltFYzZUUFkFEbA3jE9zkk6XqstOECcE1eM7ZJS9rvHqfq/dFicJRUO4XDBc5yadbS6wgBLxBeARrGnhbBJQYc+bdh0XOiPMQX/ricMDc1YtgTRdkcNLOHFldeNDCaTWpPygzlMDzjaYxpGLTgcm/qKHu0NaZgemL3USIT6+nrBGz35VbX7ciaZoPScSJu80Mm45Noh3xr3WfQdv/FJOB2PE9EXreNA11yZW/dqeBDMi/zQB9cHwrescgPMgUmBnRi53OpZtpKESp/BjUomZ4VCP3F7gIAZQVHdmc4mA3aw365ejdm049xCTAFzXJR2an\"}",
+      "octets": 508
+    },
+    "cas": {
+      "accepte_ring": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"enc\":\"bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "acceptee",
+        "note": "ring, durée et lampe du téléphone"
+      },
+      "accepte_limite": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"enc\":\"bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+        "maintenant": 1792300900000,
+        "phase": "coupure",
+        "attendu": "acceptee",
+        "note": "15 min tout juste"
+      },
+      "accepte_parametres": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"d0d1d2d3d4d5d6d7d8d9dadb\",\"enc\":\"mL4aID6gH7ynwQufvYopV8I15Wdq3ddQR6L22GTGU6iIXOU+k+pSYanjeJK6UN8X3beVgoVb4hv95hEONEcPRiDHp+AjvVdg7x4tvb5fE8Q=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "acceptee",
+        "note": "ring de 300 s, lampe éteinte"
+      },
+      "accepte_ancien_format_transition": {
+        "texte": "{\"type\":\"cmd\",\"cmd\":\"ring\",\"ts\":1792300000000,\"nonce\":\"00112233445566778899aabbccddeeff\",\"sig\":\"7ffd2efada78790ab03160b91adce2ff48c30a2c5a388131d20fd354c684b660\"}",
+        "maintenant": 1792300005000,
+        "phase": "transition",
+        "attendu": "acceptee",
+        "note": "commande v2 (bloc commande) pendant la transition"
+      },
+      "refus_ancien_format": {
+        "texte": "{\"type\":\"cmd\",\"cmd\":\"ring\",\"ts\":1792300000000,\"nonce\":\"00112233445566778899aabbccddeeff\",\"sig\":\"7ffd2efada78790ab03160b91adce2ff48c30a2c5a388131d20fd354c684b660\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "ancien-format",
+        "note": "la même commande v2 après la coupure"
+      },
+      "refus_mauvais_id": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"f0f1f2f3f4f5f6f7f8f9fafb\",\"enc\":\"ZJf5vy1QXSRx8+7B6rvjCn0zn+NDdo+tk3EIEap0a0iR0evLoB929GqrsVfJk/wYARkwDCMdAvmgB0r/ux8Ik/5N0KFOJnTEEK/4Ir/8joI=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "authentification",
+        "note": "bonne clé, AAD avec l'id a77c0aa274a1ec0ee1a2b301f85649b4 d'une autre chaîne"
+      },
+      "refus_mauvaise_cle": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"f1f2f3f4f5f6f7f8f9fafbfc\",\"enc\":\"csV24v7sfs4zS04awRnws2FPIPK6UGNuQumoHKqjS3HBA1ieXKLIvXtYvSTy5EUD+yZz823SpNUdrQoOO3Gv2ARSp+xm1ji/1WKZpxBBnf4=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "authentification",
+        "note": "K_cmd d'une autre chaîne, bon id"
+      },
+      "refus_cle_etat": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"f2f3f4f5f6f7f8f9fafbfcfd\",\"enc\":\"HA+PUJWIISj6TWL16dJPV1CSH3gyQ/dv7ctyFY/9VU6A4C8nm0/ZP+dzTb+H9B8NkDrX6bHJAIzup+dAbRLRRZv7fMdkdl8XTqxh/v0MGGs=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "authentification",
+        "note": "chiffrée avec K_enc au lieu de K_cmd"
+      },
+      "refus_altere": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"enc\":\"bIHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "authentification",
+        "note": "premier octet de enc inversé"
+      },
+      "refus_rejeu": {
+        "avant": "v3_ring",
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"enc\":\"bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "rejeu",
+        "note": "la même ring une seconde fois (par le relais puis par Bluetooth, ou l'inverse)"
+      },
+      "refus_trop_vieux": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"enc\":\"bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+        "maintenant": 1792300900001,
+        "phase": "coupure",
+        "attendu": "fraicheur",
+        "note": "15 min et 1 ms après ts"
+      },
+      "refus_futur": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"enc\":\"bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+        "maintenant": 1792299099999,
+        "phase": "coupure",
+        "attendu": "fraicheur",
+        "note": "15 min et 1 ms avant ts"
+      },
+      "refus_ordre": {
+        "avant": "v3_stop",
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a0a1a2a3a4a5a6a7a8a9aaab\",\"enc\":\"bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "ordre",
+        "note": "ring plus ancienne que la stop déjà acceptée"
+      },
+      "refus_taille_courte": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a3a4a5a6a7a8a9aaabacadae\",\"enc\":\"n7sxBEEiMo4jnEdtDPbaujVNE8iAMpE9ip9evEvMgrk/d+V6ajF17/tmofppsNrnc3Tys7a2HukjSThYUglEMR0fZAQYab8DCz6twh9GJQ==\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "taille",
+        "note": "clair de 63 octets, chiffré correctement"
+      },
+      "refus_taille_longue": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a4a5a6a7a8a9aaabacadaeaf\",\"enc\":\"bXvpQ82oHyFLDZOrUtojoRyscCxx73SbpiegFkhoSZyWbryhq5CjBEGcNBuVJ2fekSghjSHsoBZ7q+w0mSl0dn81j9mxov/3Qvjh8jVwNLle\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "taille",
+        "note": "clair de 65 octets, chiffré correctement"
+      },
+      "refus_version": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a5a6a7a8a9aaabacadaeafb0\",\"enc\":\"aNfZpxpoo2QLYO5Sa2ceIsL1Bn8z+OIEbU99xPUosHZU49YwhSgyu/XKOCxE1EnFiqN0zmo0kZOduRb28rC4sgSij52KCcPu1XK01PAKPcs=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "version",
+        "note": "octet de version à 4"
+      },
+      "refus_commande_inconnue": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a6a7a8a9aaabacadaeafb0b1\",\"enc\":\"/ATHt9hXO4R9LWeTdcycqV7LVLLd9hXeD8S6+22jRvOer8guqEsWXDz9QL0eoknFU6mX+rZOZAip8tlz18Ht9KQEAAvlU44CWJu2LkHVH1Y=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "commande",
+        "note": "code de commande 4"
+      },
+      "refus_ts_hors_plage": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"a7a8a9aaabacadaeafb0b1b2\",\"enc\":\"UMAIFUbSXBChSUSkkVVAh6hv5ZWhJQYCf2FW8D1fQU1vvgC3QgbBpcxMYje96v+/KCvinJYQtNGlYn16Qlhok3ge34YIoekqBf+7x26IQcU=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "fraicheur",
+        "note": "ts = 2^63 : négatif en Long signé, à refuser avant tout calcul"
+      },
+      "refus_forme_nonce": {
+        "texte": "{\"type\":\"cmd\",\"v\":3,\"nonce\":\"A0A1A2A3A4A5A6A7A8A9AAAB\",\"enc\":\"bYHURte+9gLQfdgXy/RfJfO02tB24Av/kWJ0fFrJJdC5wzC3fARu7mQq9wH+sETFtMInHz6IvnBpFP3W/WSe4tosuzNBbS4KlvL8n0tEmoQ=\"}",
+        "maintenant": 1792300005000,
+        "phase": "coupure",
+        "attendu": "forme",
+        "note": "nonce en majuscules"
+      }
+    }
+  }
+}

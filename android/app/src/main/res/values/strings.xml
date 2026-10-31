@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sonne</string>
+    <!-- Notifications -->
+    <string name="canal_veille">Standby</string>
+    <string name="canal_veille_description">Quiet notification that keeps Sonne reachable.</string>
+    <string name="canal_sonnerie">Ringing</string>
+    <string name="canal_sonnerie_description">Shows the ringing screen when the phone is rung remotely.</string>
+    <string name="sonnerie_titre">Sonne is ringing this phone</string>
+    <string name="sonnerie_texte">Someone is ringing this phone remotely.</string>
+    <string name="stop">Stop</string>
+    <string name="veille_titre">Sonne standby</string>
+    <string name="veille_connecte">Reachable</string>
+    <string name="veille_reconnexion">Reconnecting to the relay…</string>
+    <string name="veille_recherche">Bluetooth search on</string>
+
+    <!-- Tabs -->
+    <string name="onglet_accueil">Home</string>
+    <string name="onglet_reglages">Settings</string>
+
+    <!-- Home -->
+    <string name="etat_jamais">never</string>
+    <string name="etat_derniere_connexion">Last connection: %1$s</string>
+    <string name="etat_batterie">Battery: %1$d%%</string>
+    <string name="etat_relais">Relay: %1$s</string>
+    <string name="tester_sonnerie">Test the ringer</string>
+    <string name="arreter_sonnerie">Stop ringing</string>
+    <string name="tester_explication">The test takes exactly the same path as a remote ring: maximum volume, vibration, flashlight and ringing screen.</string>
+    <plurals name="permissions_manquantes">
+        <item quantity="one">%1$d setting to check</item>
+        <item quantity="other">%1$d settings to check</item>
+    </plurals>
+    <string name="permissions_rappel">Without them, Sonne may not ring in silent mode or may stop being reachable.</string>
+    <string name="voir_autorisations">See permissions</string>
+    <string name="etape_suivante_titre">Next step: link a browser</string>
+    <string name="etape_suivante_texte">Scan the pairing code from the device that will act as the remote, then write down the 12 words.</string>
+    <string name="etape_suivante_bouton">Pair a browser</string>
+    <string name="secret_perdu_titre">This phone\'s key was lost</string>
+    <string name="secret_perdu_texte">Android can no longer read the stored key: browsers can no longer ring this phone. Create a new key, then link your browsers again.</string>
+    <string name="secret_perdu_bouton">Create a new key</string>
+    <string name="secret_indisponible">This phone\'s key cannot be read right now. Try again in a moment.</string>
+    <string name="alarmes_bloquees_titre">Do Not Disturb silences alarms</string>
+    <string name="alarmes_bloquees_texte">In the current mode, Sonne would ring silently. Allow alarms in your Do Not Disturb modes.</string>
+    <string name="alarmes_bloquees_bouton">Open modes</string>
+
+    <!-- Pairing -->
+    <string name="appairage_hote">This code and link open the page of %1$s.</string>
+    <string name="appairage_relais_perso">Custom relay: the page of %1$s will receive this phone\'s key. Only use it if you trust that server.</string>
+    <string name="appairage_identifiant">This phone\'s identifier: %1$s</string>
+    <string name="appairage_historique">On a browser synced with an account, prefer pasting the link or typing the 12 words in the page: a link opened directly stays in the history.</string>
+    <string name="appairage_qr">Pairing QR code</string>
+    <string name="appairage_secret">Write these 12 words on paper or in your password manager: they let you ring this phone from any browser, even on someone else\'s device. The code, the link and the words are the same key: anyone who has them can ring it too. Keep them to yourself.</string>
+    <string name="nouvelle_chaine">Change key</string>
+    <string name="nouvelle_chaine_explication">Creates a new key. Every paired browser loses access.</string>
+    <string name="nouvelle_chaine_titre">Change this phone\'s key?</string>
+    <string name="nouvelle_chaine_confirmation">Browsers already paired will no longer be able to ring this phone. You will need to pair them again.</string>
+    <string name="nouvelle_chaine_valider">Change</string>
+    <string name="annuler">Cancel</string>
+    <string name="copie">Copied</string>
+
+    <!-- Settings -->
+    <string name="reglages_relais">Relay address</string>
+    <string name="reglages_relais_aide">The reference relay is sonne.sidali.dev. You can host your own. Changing the address means linking your browsers again from that relay\'s page.</string>
+    <string name="reglages_relais_invalide">An https:// address is expected</string>
+    <string name="enregistrer">Save</string>
+    <string name="par_defaut">Default</string>
+    <string name="reglages_duree">Automatic stop after %1$d min</string>
+    <string name="reglages_duree_aide">Ringing stops by itself after this delay, from 1 to 10 minutes.</string>
+    <string name="reglages_torche">Flashlight</string>
+    <string name="reglages_torche_aide">Blink the flashlight while ringing.</string>
+
+    <!-- Permissions -->
+    <string name="permissions_titre">Permissions</string>
+    <string name="permissions_accroche">Sonne rings this phone from a browser, even in silent mode. A few settings and you are done.</string>
+    <string name="permissions_intro">To ring even in silent mode and stay reachable without Google, Sonne needs a few settings. Each button opens the right system screen.</string>
+    <string name="perm_notifs_titre">Notifications</string>
+    <string name="perm_notifs_texte">To show the ringing screen and the small standby notification.</string>
+    <string name="perm_dnd_titre">Do Not Disturb access</string>
+    <string name="perm_dnd_texte">To lift Do Not Disturb while ringing. It is restored afterwards.</string>
+    <string name="perm_batterie_titre">Unrestricted battery</string>
+    <string name="perm_batterie_texte">So that Android does not cut the relay connection while the phone sleeps.</string>
+    <string name="perm_plein_ecran_titre">Full screen over the lock screen</string>
+    <string name="perm_plein_ecran_texte">To show the Stop button over the lock screen.</string>
+    <string name="perm_autoriser">Allow</string>
+    <string name="continuer">Continue</string>
+    <!-- Home: Nearby and Bluetooth beacon -->
+    <string name="accueil_nearby">Find a phone nearby</string>
+    <string name="etat_balise_active">Bluetooth beacon: emitting (search mode)</string>
+    <string name="etat_balise_inactive">Bluetooth beacon: search mode, not emitting yet</string>
+    <string name="etat_balise_desactivee">Bluetooth beacon: turned off in Settings</string>
+    <string name="bt_eteint_titre">Bluetooth is off</string>
+    <string name="bt_eteint_texte">This phone cannot be found nearby or rung over Bluetooth while Bluetooth is off. The relay still works.</string>
+    <string name="bt_allumer">Turn on Bluetooth</string>
+    <string name="retour">Back</string>
+
+    <!-- Nearby -->
+    <string name="nearby_titre">Nearby</string>
+    <string name="nearby_intro">Walk around: the gauge and the beeps tell you when you get closer. This screen asks your phone, through the relay, to turn on its beacon for 10 minutes. Ring goes over Bluetooth when the phone is in range, through the relay otherwise.</string>
+    <string name="nearby_aucun_titre">No other phone yet</string>
+    <string name="nearby_aucun_texte">Add the phone you want to find: scan its pairing code, paste its link or type its 12 words.</string>
+    <string name="nearby_sans_bluetooth">This device has no Bluetooth Low Energy: ringing goes through the relay only.</string>
+    <string name="nearby_permission_titre">Nearby devices</string>
+    <string name="nearby_permission_texte">To detect your phone\'s beacon and ring it over Bluetooth. Sonne does not use your location.</string>
+    <string name="nearby_bt_eteint_texte">Turn on Bluetooth to detect your phone nearby. Ring still works through the relay.</string>
+    <string name="niveau_0">Lost</string>
+    <string name="niveau_1">Cold</string>
+    <string name="niveau_2">Cool</string>
+    <string name="niveau_3">Warm</string>
+    <string name="niveau_4">Hot</string>
+    <string name="niveau_5">Very hot</string>
+    <string name="nearby_jauge">Signal gauge, level %1$d</string>
+    <string name="nearby_pas_encore_vu">Not seen yet. Keep walking around.</string>
+    <string name="nearby_scan_arrete">Search paused</string>
+    <string name="nearby_vu_il_y_a">Seen %1$d s ago, last signal %2$d dBm</string>
+    <string name="nearby_erreur_scan">Bluetooth search refused by Android (code %1$d). Trying again shortly.</string>
+    <string name="nearby_ring">Ring</string>
+    <string name="nearby_envoi">Sending…</string>
+    <string name="nearby_stop">Stop ringing</string>
+    <string name="nearby_chemin_bluetooth">In range: over Bluetooth, without Internet</string>
+    <string name="nearby_chemin_relais">Out of range: through the relay</string>
+    <string name="nearby_bips_aide">A beep that speeds up as you get closer, on the notification volume.</string>
+    <string name="nearby_limite">The signal depends on walls, pockets and phone models: the gauge guides you, it does not measure a distance.</string>
+    <string name="resultat_bluetooth">Received over Bluetooth: %1$s, battery %2$d%%, Sonne %3$s</string>
+    <string name="resultat_sonne">ringing</string>
+    <string name="resultat_ne_sonne_pas">not ringing</string>
+    <string name="resultat_relais_livre">Delivered through the relay.</string>
+    <string name="resultat_relais_file">The phone is offline: the command waits on the relay (15 min at most).</string>
+    <string name="resultat_relais_hors_ligne">The phone is offline.</string>
+    <string name="resultat_trop">Too many commands. Try again in a minute.</string>
+    <string name="resultat_echec">Could not reach the phone, neither over Bluetooth nor through the relay.</string>
+    <string name="resultat_echec_stop">Could not reach the phone to stop it, neither over Bluetooth nor through the relay.</string>
+
+    <!-- My other phones -->
+    <string name="mes_autres_telephones">My other phones</string>
+    <string name="chaines_intro">The phones you can find and ring from here. Same key as in the web page: the pairing code, link or 12 words shown in the Your key tab of that phone.</string>
+    <string name="chaines_vide">No phone added yet.</string>
+    <string name="chaine_details">Identifier %1$s, relay %2$s</string>
+    <string name="chaine_ajouter">Add a phone</string>
+    <string name="chaine_scanner">Scan a QR code</string>
+    <string name="chaine_coller">Paste a link or the 12 words</string>
+    <string name="chaine_coller_aide">Link or 12 words</string>
+    <string name="chaines_aide">The camera is only used to read the code, nothing is recorded. The keys are stored encrypted on this phone.</string>
+    <string name="coller">Paste</string>
+    <string name="chaine_invalide">Neither a Sonne link nor 12 valid words.</string>
+    <string name="chaine_relais_refuse">This link uses an unsecured relay (http://). An https:// address is expected.</string>
+    <string name="camera_refusee">Camera not allowed: paste the link or type the 12 words instead.</string>
+    <string name="chaine_confirmer_titre">Add this phone?</string>
+    <string name="chaine_confirmer_texte">Identifier: %1$s. Check that it matches the identifier shown in the Your key tab of that phone.</string>
+    <string name="chaine_confirmer_relais">Relay: %1$s</string>
+    <string name="chaine_nom">Name</string>
+    <string name="chaine_nom_defaut">Phone %1$d</string>
+    <string name="ajouter">Add</string>
+    <string name="chaine_ajoutee">Phone added</string>
+    <string name="chaine_deja_la">This phone is already in the list.</string>
+    <string name="chaine_ce_telephone">This is this phone\'s own key: add it on another phone.</string>
+    <string name="renommer">Rename</string>
+    <string name="retirer">Remove</string>
+    <string name="chaine_retirer_titre">Remove %1$s?</string>
+    <string name="chaine_retirer_texte">You will need its pairing code, link or 12 words to add it again.</string>
+    <string name="chaines_illisibles_titre">List unreadable</string>
+    <string name="chaines_illisibles">Android can no longer read the list of your other phones. Empty it, then add them again.</string>
+    <string name="chaines_vider">Empty the list</string>
+    <string name="chaines_vider_texte">Every phone of this list will be forgotten on this phone. Their keys do not change.</string>
+
+    <!-- Settings: Nearby -->
+    <string name="reglages_balise">Bluetooth beacon</string>
+    <string name="reglages_balise_aide">Lets your other phones find this one nearby and ring it without Internet. The beacon only emits for 10 minutes after a command (ring, stop, or a search from Nearby), or when this phone has been offline for an hour. Its identifier changes every 15 minutes.</string>
+    <string name="reglages_bips">Proximity beeps</string>
+    <string name="reglages_bips_aide">When looking for another phone with Nearby.</string>
+
+    <!-- Permissions: Bluetooth -->
+    <string name="perm_bluetooth_titre">Nearby devices</string>
+    <string name="perm_bluetooth_texte">For Nearby: your other phones can find this one over Bluetooth and ring it without Internet, and this phone can look for them. No location.</string>
+    <string name="etat_balise_veille">Bluetooth beacon: standby. It turns on when you look for this phone.</string>
+    <string name="reglages_balise_nom">While the beacon emits, any device nearby can read this phone\'s Bluetooth name. Give it a neutral name (Settings, Connected devices) rather than your first name.</string>
+    <string name="appairage_balise">Anyone who has these 12 words, this code or this link can also tell when this phone is nearby while its Bluetooth beacon emits, and can make it emit by sending a command.</string>
+    <string name="nearby_reveil_en_cours">Waking the beacon through the relay…</string>
+    <string name="nearby_reveil_envoye">Beacon wake-up delivered: the phone emits for 10 minutes.</string>
+    <string name="nearby_reveil_hors_ligne">The phone is offline: its beacon turns on by itself after an hour without the relay.</string>
+    <string name="nearby_reveil_echec">Relay unreachable from here: the phone\'s beacon only turns on after a command from a browser, or after an hour offline.</string>
+    <string name="nearby_copie">Several beacons send this phone\'s identifier at the same time: someone may be copying it. The gauge follows the strongest one.</string>
+    <string name="resultat_sans_accuse">Written over Bluetooth, but no acknowledgement came back and the relay could not be reached.</string>
+    <string name="bt_coupure_titre">Bluetooth turns off by itself</string>
+    <string name="bt_coupure_texte">The \"Turn off Bluetooth automatically\" option switches Bluetooth off when no device is connected, and the beacon with it, most likely right when this phone is lost. Turn it off in the Bluetooth settings.</string>
+    <string name="bt_coupure_bouton">Bluetooth settings</string>
+    <string name="nearby_bt_coupure">Automatic Bluetooth turn-off is on here: it may cut Bluetooth during the search.</string>
+    <!-- Built-in update -->
+    <string name="canal_maj">Updates</string>
+    <string name="canal_maj_description">Tells you when a new version of Sonne is available.</string>
+    <string name="maj_notif_titre">Update available</string>
+    <string name="maj_notif_texte">Sonne %1$s is available. Tap to download and install it.</string>
+    <string name="maj_notif_confirmer">Tap to finish installing Sonne %1$s.</string>
+    <string name="maj_titre">Update available: Sonne %1$s</string>
+    <string name="maj_texte">You have version %1$s. The update keeps your key, your settings and your paired browsers.</string>
+    <string name="maj_installer">Download and install</string>
+    <string name="maj_autorisation">To update itself, Sonne needs the \"Install unknown apps\" permission. Android still shows the update and asks for your confirmation: nothing is installed without you.</string>
+    <string name="maj_autoriser">Allow in settings</string>
+    <string name="maj_telechargement">Downloading… %1$d%%</string>
+    <string name="maj_verification">Checking the file and its signature…</string>
+    <string name="maj_installation">Confirm the installation on the Android screen.</string>
+    <string name="maj_reessayer">Try again</string>
+    <string name="maj_echec_reseau">Download failed. Check your connection and try again.</string>
+    <string name="maj_echec_taille">Download refused: the file is far too large to be Sonne.</string>
+    <string name="maj_echec_sha256">Update refused: the downloaded file does not match the published checksum. It was deleted.</string>
+    <string name="maj_echec_certificat">Update refused: the file is not signed with the same key as the installed app. It was deleted.</string>
+    <string name="maj_echec_paquet">Update refused: the file is not the announced version of Sonne. It was deleted.</string>
+    <string name="maj_echec_stockage">Not enough free space to download the update.</string>
+    <string name="maj_echec_installation">Android could not install the update.</string>
+    <string name="reglages_maj">Check for updates</string>
+    <string name="reglages_maj_aide">Once a day and when the app opens, Sonne asks %1$s whether a new version exists. Nothing about you is sent. Each update is checked (checksum and signature) and installed only after your confirmation.</string>
+    <string name="maj_verifier">Check now</string>
+    <string name="maj_verifier_disponible">An update is available: see the Home tab.</string>
+    <string name="maj_verifier_a_jour">Sonne is up to date.</string>
+    <string name="maj_verifier_echec">Could not check for updates. Try again later.</string>
+    <string name="cle_titre">Your key</string>
+    <string name="cle_sous_titre">These 12 words link your devices to this phone. Nobody, not even us, can recover them for you.</string>
+    <string name="cle_qr_titre">Pair a browser</string>
+    <string name="cle_qr_texte">Scan this code with the device that will ring this phone, or open the link on it.</string>
+    <string name="cle_mots_titre">12 words</string>
+    <string name="cle_sauvegarde_titre">Back up your key</string>
+    <string name="cle_sauvegarde_texte">Save it in your password manager, or keep the rescue kit somewhere safe. Then check it in 10 seconds.</string>
+    <string name="cle_enregistrer_gestionnaire">Save to password manager</string>
+    <string name="cle_kit">Rescue kit (PDF)</string>
+    <string name="cle_copier_mots">Copy words</string>
+    <string name="cle_copier_lien">Copy link</string>
+    <string name="cle_verifier">Check my backup</string>
+    <string name="cle_verifiee">Backed up and checked</string>
+    <string name="cle_verifiee_texte">You can link a new device or reinstall Sonne without losing anything.</string>
+    <string name="cle_enregistree">Saved. Now check your backup.</string>
+    <string name="cle_echec_gestionnaire">No password manager answered. Use the rescue kit, or copy the words into it by hand.</string>
+    <string name="cle_kit_enregistre">Rescue kit saved.</string>
+    <string name="cle_quiz_titre">Check your backup</string>
+    <string name="cle_quiz_texte">Type words %1$d, %2$d and %3$d of your key.</string>
+    <string name="cle_quiz_mot">Word %1$d</string>
+    <string name="cle_quiz_valider">Check</string>
+    <string name="cle_quiz_faux">That does not match. Look at your backup and try again.</string>
+    <string name="cle_rappel_titre">Your key is not backed up yet</string>
+    <string name="cle_rappel_texte">If you lose this phone or reinstall Sonne, you would have to pair every device again.</string>
+    <string name="cle_rappel_bouton">Back it up now</string>
+    <string name="cle_avance">Advanced</string>
+    <string name="cle_kit_titre_pdf">Sonne rescue kit</string>
+    <string name="cle_kit_aide_pdf">Keep this page private. Anyone who has these words can ring this phone. To pair a new device, scan the code or type the 12 words at %1$s.</string>
+    <string name="accueil_sous_titre">Ring this phone from anywhere, even in silent mode.</string>
+    <string name="etat_titre">Status</string>
+    <string name="etat_court_connecte">Online</string>
+    <string name="etat_court_hors_ligne">Offline</string>
+    <string name="etat_court_eteint">Off</string>
+    <string name="marche_on">Sonne is on</string>
+    <string name="marche_off">Sonne is off</string>
+    <string name="marche_on_aide">Your browsers and other phones can ring this phone.</string>
+    <string name="marche_off_aide">While off, this phone can\'t be rung or found.</string>
+    <string name="reglages_section_sonnerie">Ringing</string>
+    <string name="reglages_section_proximite">Nearby</string>
+    <string name="reglages_section_maj">Updates</string>
+
+    <!-- About -->
+    <string name="apropos_titre">About</string>
+    <string name="apropos_ligne">About Sonne</string>
+    <string name="apropos_principes">Our principles</string>
+    <string name="apropos_principe_1">Your data belongs to you.</string>
+    <string name="apropos_principe_2">No account. No tracking. No ads.</string>
+    <string name="apropos_principe_3">Nothing leaves your device unless you choose it.</string>
+    <string name="apropos_principe_4">The code will be published, so anyone can check this.</string>
+    <string name="apropos_version_section">Version</string>
+    <string name="apropos_version">Version %1$s</string>
+    <string name="apropos_nouveautes">What\'s new</string>
+    <string name="apropos_securite">Security</string>
+    <string name="apropos_revue">Last security review: %1$s</string>
+    <string name="apropos_audit">Internal review. No external audit yet.</string>
+    <string name="apropos_certificat">Signing certificate</string>
+    <string name="apropos_certificat_inconnu">Unavailable</string>
+    <string name="apropos_signaler">Report a security issue</string>
+    <string name="apropos_liens">Links</string>
+    <string name="apropos_confidentialite">Privacy policy</string>
+    <string name="apropos_contact">Contact</string>
+    <string name="apropos_polices">Fonts: Bricolage Grotesque and Figtree, under the SIL Open Font License 1.1 (included in the app).</string>
+    <string name="apropos_pied">Made by Sid · sidali.dev</string>
+    <string name="apropos_pas_de_mail">No e-mail app found. Write to %1$s.</string>
+    <string name="apropos_sujet_securite">Sonne security issue</string>
+
+    <!-- What leaves your device -->
+    <string name="sortie_titre">What leaves your device</string>
+    <string name="sortie_vers">To: %1$s</string>
+    <string name="sortie_chiffre">Encrypted: %1$s</string>
+    <string name="sortie_etat_titre">Phone status</string>
+    <string name="sortie_etat_chiffre">yes, end to end</string>
+    <string name="sortie_etat_texte">Battery, ringing or not, phone model and app version. Only your paired browsers and phones can read it.</string>
+    <string name="sortie_commandes_titre">Ring commands</string>
+    <string name="sortie_commandes_chiffre">yes, end to end</string>
+    <string name="sortie_commandes_texte">Ring, stop and status checks, from your browsers and other phones. Every command is a message of the same size: the relay cannot tell them apart. Nobody without your key can send or read one. A phone still on Sonne 1.5 or older gets the old format, signed only, until it updates.</string>
+    <string name="sortie_relais_titre">What the relay sees</string>
+    <string name="sortie_relais_texte">A random chain id, message sizes (the same for every command), times, and your IP address while connected. It never sees the content. It writes nothing to disk: waiting commands are dropped after 15 minutes, the last seen time after 24 hours.</string>
+    <string name="sortie_relais_proxy">On sonne.sidali.dev, the web server in front of the relay logs each request (IP address, time, path, never the chain id) for 7 days.</string>
+    <string name="sortie_maj_titre">Update check</string>
+    <string name="sortie_maj_chiffre">in transit (HTTPS)</string>
+    <string name="sortie_maj_texte">Once a day and when the app opens, a request for the latest version number, and the download if you install it. No identifier is sent. You can turn it off in Settings.</string>
+    <string name="sortie_bluetooth_titre">Bluetooth beacon (Nearby)</string>
+    <string name="sortie_bluetooth_vers">devices within Bluetooth range</string>
+    <string name="sortie_bluetooth_chiffre">no, but unreadable without your key</string>
+    <string name="sortie_bluetooth_texte">Only for 10 minutes after a command, while ringing, or after an hour without the relay. Its id changes every 15 minutes. You can turn it off in Settings.</string>
+    <string name="sortie_cle_titre">Your key</string>
+    <string name="sortie_cle_vers">only where you choose</string>
+    <string name="sortie_cle_chiffre">depends on where you save it</string>
+    <string name="sortie_cle_texte">Your password manager, a rescue kit PDF, or the clipboard, only when you tap one of them.</string>
+    <string name="sortie_rien">Nothing else. No account, no analytics, no crash reports, no Google services.</string>
+
+    <!-- Erase everything -->
+    <string name="effacer_bouton">Erase everything</string>
+    <string name="effacer_aide">Deletes your key, your settings and your other phones from this phone, and destroys the encryption keys.</string>
+    <string name="effacer_titre">Erase everything?</string>
+    <string name="effacer_texte">Your key, your settings and your other phones are deleted from this phone, and its encryption keys are destroyed. Paired browsers and phones will no longer reach it. The relay has no erase command, so Sonne leaves the chain: the relay keeps nothing on disk and forgets this phone within 24 hours. Sonne then closes and starts fresh next time.</string>
+    <string name="effacer_saisie">Type ERASE to confirm</string>
+    <string name="effacer_mot" translatable="false">ERASE</string>
+    <string name="effacer_valider">Erase</string>
+
+    <!-- Permissions page (from Settings or the home screen). -->
+    <string name="autorisations_intro">What Sonne uses, and why. Tap a row to turn it on, or to turn it off in Settings. Sonne adapts when you come back.</string>
+    <string name="autorisations_section_sonner">To ring</string>
+    <string name="autorisations_section_options">Options</string>
+    <string name="autorisations_toujours">Granted at install, nothing to switch: internet, background connection, start at boot and vibration. The flashlight needs no permission. Sonne never asks for your location.</string>
+    <string name="reglages_autorisations_aide">What Sonne uses and why. Turn each one on or off.</string>
+    <string name="reglages_balise_coupee">Paused: Nearby devices is off. Turn it back on in Permissions.</string>
+    <string name="perm_activer_reglages">Turn on in Settings</string>
+    <string name="perm_retirer_reglages">Turn off in Settings</string>
+    <string name="perm_etat_actif">On</string>
+    <string name="perm_etat_coupe">Off</string>
+    <string name="perm_notifs_coupe">Off: the ringing screen and the standby notification will not show.</string>
+    <string name="perm_plein_ecran_coupe">Off: the Stop button will not show over the lock screen.</string>
+    <string name="perm_dnd_coupe">Off: in Do Not Disturb, Sonne may stay silent.</string>
+    <string name="perm_batterie_coupe">Off: Android may cut the connection while the phone sleeps, so a ring can come late.</string>
+    <string name="perm_bluetooth_coupe">Off: the beacon and the Nearby search are paused. The relay still works.</string>
+    <string name="perm_camera_titre">Camera</string>
+    <string name="perm_camera_texte">To scan the QR code of another phone in My other phones. Nothing is recorded.</string>
+    <string name="perm_camera_coupe">Off: paste the other phone\'s link instead of scanning it.</string>
+    <string name="perm_installation_titre">Install updates</string>
+    <string name="perm_installation_texte">So Sonne can update itself. Android still shows each update and asks you first.</string>
+    <string name="perm_installation_coupe">Off: Sonne tells you when an update is out, but cannot install it.</string>
+</resources>

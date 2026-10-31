@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>About Sonne</title>
+    <meta name="description" content="Our principles, what leaves your browser, privacy and security." />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#fbf7ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12201a" media="(prefers-color-scheme: dark)" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="entete">
+      <a class="marque marque-lien" href="./">
+        <img src="icon.svg" alt="" width="28" height="28" />
+        <span>Sonne</span>
+      </a>
+    </header>
+
+    <main class="apropos">
+      <p><a class="retour" href="./">‹ Back</a></p>
+      <h1>About</h1>
+
+      <section class="carte" aria-labelledby="t-principes">
+        <h2 id="t-principes">Our principles</h2>
+        <ul class="principes">
+          <li>Your data belongs to you.</li>
+          <li>No account. No tracking. No ads.</li>
+          <li>Nothing leaves your device unless you choose it.</li>
+          <li>The code will be published, so anyone can check this.</li>
+        </ul>
+      </section>
+
+      <section class="carte" aria-labelledby="t-sortie">
+        <h2 id="t-sortie">What leaves your browser</h2>
+        <h3>Ring commands</h3>
+        <p>
+          To: the relay that served this page. Encrypted: yes, end to end. Every command is a message of the same size: the
+          relay cannot tell a ring from a stop or a status check. Nobody without your phone's key can send or read one. A
+          phone still on Sonne 1.5 or older gets the old format, signed only, until it updates.
+        </p>
+        <h3>Phone status</h3>
+        <p>
+          From your phone, through the relay. Encrypted: yes, end to end. Only this browser and your other paired devices
+          can read the battery, ringing state and phone model.
+        </p>
+        <h3>What the relay sees</h3>
+        <p>
+          A random chain id, message sizes (the same for every command), times, and your IP address while connected. It
+          never sees the content. It writes nothing to disk: waiting commands are dropped after 15 minutes, the last seen
+          time after 24 hours.
+        </p>
+        <p class="discret">
+          On sonne.sidali.dev, the web server in front of the relay logs each request (IP address, time, path, never the
+          chain id) for 7 days.
+        </p>
+        <h3>Stored in this browser only</h3>
+        <p>
+          Non-exportable keys for your phones, their names and the activity list. No cookies, no analytics. Remove a phone
+          from My phones to delete it here.
+        </p>
+      </section>
+
+      <section class="carte" aria-labelledby="t-securite">
+        <h2 id="t-securite">Security</h2>
+        <p>Last security review: 24 Oct 2026</p>
+        <p class="discret">Internal review. No external audit yet.</p>
+        <p><a href="mailto:contact@sidali.dev?subject=Sonne%20security%20issue">Report a security issue</a></p>
+      </section>
+
+      <section class="carte" aria-labelledby="t-liens">
+        <h2 id="t-liens">Links</h2>
+        <p>
+          Privacy policy: everything above, and the same list in the Android app under Settings, About, What leaves your
+          device.
+        </p>
+        <p><a href="mailto:contact@sidali.dev">Contact</a></p>
+      </section>
+    </main>
+
+    <footer class="pied">
+      <p>Made by Sid · <a href="https://sidali.dev">sidali.dev</a></p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- The key is saved as a standalone entry in the user's password manager, not tied to a website login,
+         so there are no Digital Asset Links to declare. -->
+    <issue id="CredManMissingDal" severity="ignore" />
+</lint>
